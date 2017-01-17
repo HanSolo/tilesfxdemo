@@ -1,0 +1,26 @@
+group 'eu.hansolo'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+// start the demo from gradle
+task Demo(type: JavaExec) {
+    main = "eu.hansolo.tilesfxdemo.Main"
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    //compile "eu.hansolo:tilesfx:+"
+    //compile "eu.hansolo:Medusa:+"
+    compile "org.kordamp.ikonli:ikonli-javafx:1.9.0"
+    compile "org.kordamp.ikonli:ikonli-material-pack:1.9.0"
+    compile "org.kordamp.ikonli:ikonli-materialdesign-pack:1.9.0"
+    compile "org.kordamp.ikonli:ikonli-weathericons-pack:1.9.0"
+}
