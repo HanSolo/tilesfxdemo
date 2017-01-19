@@ -1,5 +1,11 @@
 package eu.hansolo.tilesfxdemo;
 
+import eu.hansolo.fx.regulators.ColorRegulator;
+import eu.hansolo.fx.regulators.ColorRegulatorBuilder;
+import eu.hansolo.fx.regulators.FeedbackRegulator;
+import eu.hansolo.fx.regulators.FeedbackRegulatorBuilder;
+import eu.hansolo.fx.regulators.Regulator;
+import eu.hansolo.fx.regulators.RegulatorBuilder;
 import eu.hansolo.medusa.Clock;
 import eu.hansolo.medusa.Clock.ClockSkinType;
 import eu.hansolo.medusa.ClockBuilder;
@@ -9,15 +15,11 @@ import eu.hansolo.medusa.Section;
 import eu.hansolo.tilesfx.Country;
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.Tile.SkinType;
-import eu.hansolo.tilesfx.Tile.TextSize;
 import eu.hansolo.tilesfx.TileBuilder;
 import eu.hansolo.tilesfx.TimeSection;
 import eu.hansolo.tilesfx.TimeSectionBuilder;
 import eu.hansolo.tilesfx.skins.BarChartItem;
 import eu.hansolo.tilesfx.skins.LeaderBoardItem;
-import eu.hansolo.tilesfx.weather.DarkSky;
-import eu.hansolo.tilesfx.weather.DarkSky.Language;
-import eu.hansolo.tilesfx.weather.DarkSky.Unit;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -49,55 +51,60 @@ public class Main extends Application {
     private static final double TILE_SIZE = 200;
     private static final Random RND       = new Random();
 
-    private BarChartItem    barChartItem1;
-    private BarChartItem    barChartItem2;
-    private BarChartItem    barChartItem3;
-    private BarChartItem    barChartItem4;
-    private LeaderBoardItem leaderBoardItem1;
-    private LeaderBoardItem leaderBoardItem2;
-    private LeaderBoardItem leaderBoardItem3;
-    private LeaderBoardItem leaderBoardItem4;
-    private Tile            percentageTile;
-    private Tile            clockTile;
-    private Tile            gaugeTile;
-    private Tile            sparkLineTile;
-    private Tile            areaChartTile;
-    private Tile            lineChartTile;
-    private Tile            highLowTile;
-    private Tile            timerControlTile;
-    private Tile            numberTile;
-    private Tile            textTile;
-    private Tile            plusMinusTile;
-    private Tile            sliderTile;
-    private Tile            switchTile;
-    private Tile            worldTile;
-    private Tile            weatherTile;
-    private Tile            timeTile;
-    private Tile            barChartTile;
-    private Tile            customTile;
-    private Tile            leaderBoardTile;
-    private FontIcon        icon;
-    private Tile            ikonliTile;
-    private Gauge           indicatorGauge;
-    private Tile            indicatorTile;
-    private Gauge           slimGauge;
-    private Tile            slimTile;
-    private Gauge           dashboardGauge;
-    private Tile            dashboardTile;
-    private Gauge           digitalGauge;
-    private Tile            digitalTile;
-    private Gauge           simpleDigitalGauge;
-    private Tile            simpleDigitalTile;
-    private Gauge           simpleSectionGauge;
-    private Tile            simpleSectionTile;
-    private Gauge           bulletChartGauge;
-    private Tile            bulletChartTile;
-    private Gauge           spaceXGauge;
-    private Tile            spaceXTile;
-    private Clock           slimClock;
-    private Tile            slimClockTile;
-    private long            lastTimerCall;
-    private AnimationTimer  timer;
+    private BarChartItem      barChartItem1;
+    private BarChartItem      barChartItem2;
+    private BarChartItem      barChartItem3;
+    private BarChartItem      barChartItem4;
+    private LeaderBoardItem   leaderBoardItem1;
+    private LeaderBoardItem   leaderBoardItem2;
+    private LeaderBoardItem   leaderBoardItem3;
+    private LeaderBoardItem   leaderBoardItem4;
+    private Tile              percentageTile;
+    private Tile              clockTile;
+    private Tile              gaugeTile;
+    private Tile              sparkLineTile;
+    private Tile              areaChartTile;
+    private Tile              lineChartTile;
+    private Tile              highLowTile;
+    private Tile              timerControlTile;
+    private Tile              numberTile;
+    private Tile              textTile;
+    private Tile              plusMinusTile;
+    private Tile              sliderTile;
+    private Tile              switchTile;
+    private Tile              worldTile;
+    private Tile              timeTile;
+    private Tile              barChartTile;
+    private Tile              customTile;
+    private Tile              leaderBoardTile;
+    private FontIcon          icon;
+    private Tile              ikonliTile;
+    private Gauge             indicatorGauge;
+    private Tile              indicatorTile;
+    private Gauge             slimGauge;
+    private Tile              slimTile;
+    private Gauge             dashboardGauge;
+    private Tile              dashboardTile;
+    private Gauge             digitalGauge;
+    private Tile              digitalTile;
+    private Gauge             simpleDigitalGauge;
+    private Tile              simpleDigitalTile;
+    private Gauge             simpleSectionGauge;
+    private Tile              simpleSectionTile;
+    private Gauge             bulletChartGauge;
+    private Tile              bulletChartTile;
+    private Gauge             spaceXGauge;
+    private Tile              spaceXTile;
+    private Clock             slimClock;
+    private Tile              slimClockTile;
+    private Regulator         regulator;
+    private Tile              regulatorTile;
+    private FeedbackRegulator feedbackRegulator;
+    private Tile              feedbackRegulatorTile;
+    private ColorRegulator    colorRegulator;
+    private Tile              colorRegulatorTile;
+    private long              lastTimerCall;
+    private AnimationTimer    timer;
 
 
     @Override public void init() {
@@ -161,10 +168,6 @@ public class Main extends Application {
 
         timeSection.setOnTimeSectionEntered(e -> System.out.println("Section ACTIVE"));
         timeSection.setOnTimeSectionLeft(e -> System.out.println("Section INACTIVE"));
-
-        // Weather (You can get a DarkSky API key here: https://darksky.net/dev/ )
-        DarkSky darkSky = new DarkSky("YOUR DARKSKY API KEY", Unit.CA, Language.ENGLISH, 51.911858, 7.632815);
-        //darkSky.update();
 
         // BarChart Items
         barChartItem1 = new BarChartItem("Gerrit", 47, Tile.BLUE);
@@ -463,6 +466,47 @@ public class Main extends Application {
                                 .graphic(spaceXGauge)
                                 .build();
 
+        regulator = RegulatorBuilder.create()
+                                    .prefSize(TILE_SIZE, TILE_SIZE)
+                                    .color(Tile.BACKGROUND)
+                                    .barColor(Tile.BLUE)
+                                    .textColor(Tile.FOREGROUND)
+                                    .build();
+        regulatorTile = TileBuilder.create()
+                                   .prefSize(TILE_SIZE, TILE_SIZE)
+                                   .skinType(SkinType.CUSTOM)
+                                   .title("Regulator")
+                                   .text("Light")
+                                   .graphic(regulator)
+                                   .build();
+
+        feedbackRegulator = FeedbackRegulatorBuilder.create()
+                                                    .prefSize(TILE_SIZE, TILE_SIZE)
+                                                    .color(Tile.BACKGROUND)
+                                                    .textColor(Tile.FOREGROUND)
+                                                    .build();
+        feedbackRegulatorTile = TileBuilder.create()
+                                    .prefSize(TILE_SIZE, TILE_SIZE)
+                                    .skinType(SkinType.CUSTOM)
+                                    .title("FeedbackRegulator")
+                                    .text("Temp")
+                                    .graphic(feedbackRegulator)
+                                    .build();
+
+        colorRegulator = ColorRegulatorBuilder.create()
+                                              .prefSize(TILE_SIZE, TILE_SIZE)
+                                              .color(Tile.BACKGROUND)
+                                              .textColor(Tile.FOREGROUND)
+                                              .build();
+        colorRegulatorTile = TileBuilder.create()
+                                        .prefSize(TILE_SIZE, TILE_SIZE)
+                                        .skinType(SkinType.CUSTOM)
+                                        .title("Regulator")
+                                        .text("Light")
+                                        .graphic(colorRegulator)
+                                        .build();
+
+
         lastTimerCall = System.nanoTime();
         timer = new AnimationTimer() {
             @Override public void handle(final long now) {
@@ -489,6 +533,18 @@ public class Main extends Application {
                     simpleSectionGauge.setValue(RND.nextDouble() * 100);
                     bulletChartGauge.setValue(RND.nextDouble() * 100);
                     spaceXGauge.setValue(RND.nextDouble() * 100);
+
+                    // "Control" feedback regulator
+                    double currentValue = feedbackRegulator.getCurrentValue();
+                    double targetValue  = feedbackRegulator.getTargetValue();
+                    if ((int) currentValue != (int) targetValue) {
+                        if (currentValue < targetValue) {
+                            feedbackRegulator.setCurrentValue(currentValue+1);
+                        } else if (currentValue > targetValue) {
+                            feedbackRegulator.setCurrentValue(currentValue-1);
+                        }
+                    }
+
                     lastTimerCall = now;
                 }
             }
@@ -502,7 +558,8 @@ public class Main extends Application {
                                      barChartTile, customTile, leaderBoardTile,
                                      ikonliTile, slimTile, dashboardTile, digitalTile,
                                      simpleDigitalTile, indicatorTile, simpleSectionTile,
-                                     bulletChartTile, slimClockTile, spaceXTile);
+                                     bulletChartTile, slimClockTile, spaceXTile,
+                                     regulatorTile, feedbackRegulatorTile, colorRegulatorTile);
         pane.setPadding(new Insets(10));
         pane.setHgap(10);
         pane.setVgap(10);
