@@ -15,14 +15,18 @@ import eu.hansolo.medusa.Section;
 import eu.hansolo.tilesfx.Country;
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.Tile.SkinType;
+import eu.hansolo.tilesfx.Tile.TileColor;
 import eu.hansolo.tilesfx.TileBuilder;
 import eu.hansolo.tilesfx.TimeSection;
 import eu.hansolo.tilesfx.TimeSectionBuilder;
 import eu.hansolo.tilesfx.skins.BarChartItem;
 import eu.hansolo.tilesfx.skins.LeaderBoardItem;
+import eu.hansolo.tilesfx.tools.ChartData;
+import eu.hansolo.tilesfx.tools.Location;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Background;
@@ -48,7 +52,7 @@ import static org.kordamp.ikonli.weathericons.WeatherIcons.*;
  * Time: 07:33
  */
 public class Main extends Application {
-    private static final double TILE_SIZE = 200;
+    private static final double TILE_SIZE = 150;
     private static final Random RND       = new Random();
 
     private BarChartItem      barChartItem1;
@@ -59,6 +63,10 @@ public class Main extends Application {
     private LeaderBoardItem   leaderBoardItem2;
     private LeaderBoardItem   leaderBoardItem3;
     private LeaderBoardItem   leaderBoardItem4;
+    private ChartData         chartData1;
+    private ChartData         chartData2;
+    private ChartData         chartData3;
+    private ChartData         chartData4;
     private Tile              percentageTile;
     private Tile              clockTile;
     private Tile              gaugeTile;
@@ -77,6 +85,8 @@ public class Main extends Application {
     private Tile              barChartTile;
     private Tile              customTile;
     private Tile              leaderBoardTile;
+    private Tile              mapTile;
+    private Tile              radialChartTile;
     private FontIcon          icon;
     private Tile              ikonliTile;
     private Gauge             indicatorGauge;
@@ -180,6 +190,12 @@ public class Main extends Application {
         leaderBoardItem2 = new LeaderBoardItem("Sandra", 43);
         leaderBoardItem3 = new LeaderBoardItem("Lilli", 12);
         leaderBoardItem4 = new LeaderBoardItem("Anton", 8);
+
+        // RadialChart Data
+        chartData1 = new ChartData("Item 1", 24.0, Tile.GREEN);
+        chartData2 = new ChartData("Item 2", 10.0, Tile.BLUE);
+        chartData3 = new ChartData("Item 3", 12.0, Tile.RED);
+        chartData4 = new ChartData("Item 4", 13.0, Tile.YELLOW_ORANGE);
 
         // Creating Tiles
         percentageTile = TileBuilder.create()
@@ -354,6 +370,27 @@ public class Main extends Application {
                                      .leaderBoardItems(leaderBoardItem1, leaderBoardItem2, leaderBoardItem3, leaderBoardItem4)
                                      .build();
 
+        mapTile = TileBuilder.create()
+                             .skinType(SkinType.MAP)
+                             .prefSize(TILE_SIZE, TILE_SIZE)
+                             .title("Map Tile")
+                             .text("Whatever text")
+                             .description("Description")
+                             .currentLocation(new Location(51.91178, 7.63379, "Home", TileColor.MAGENTA))
+                             .pointsOfInterest(new Location(51.914405, 7.635732, "POI 1", TileColor.RED),
+                                               new Location(51.912529, 7.631752, "POI 2", TileColor.BLUE),
+                                               new Location(51.923993, 7.628906, "POI 3", TileColor.YELLOW_ORANGE))
+                             .build();
+
+        radialChartTile = TileBuilder.create()
+                                     .skinType(SkinType.RADIAL_CHART)
+                                     .prefSize(TILE_SIZE, TILE_SIZE)
+                                     .title("RadialChart Tile")
+                                     .text("Whatever text")
+                                     .textVisible(false)
+                                     .radialChartData(chartData1, chartData2, chartData3, chartData4)
+                                     .build();
+
         icon = new FontIcon(SNOW);
         icon.setIconSize((int) TILE_SIZE);
         icon.setFill(Tile.FOREGROUND);
@@ -525,6 +562,11 @@ public class Main extends Application {
 
                     leaderBoardTile.getLeaderBoardItems().get(RND.nextInt(3)).setValue(RND.nextDouble() * 80);
 
+                    chartData1.setValue(RND.nextDouble() * 50);
+                    chartData2.setValue(RND.nextDouble() * 50);
+                    chartData3.setValue(RND.nextDouble() * 50);
+                    chartData4.setValue(RND.nextDouble() * 50);
+
                     slimGauge.setValue(RND.nextDouble() * 100);
                     dashboardGauge.setValue(RND.nextDouble() * 100);
                     digitalGauge.setValue(RND.nextDouble() * 100);
@@ -552,19 +594,16 @@ public class Main extends Application {
     }
 
     @Override public void start(Stage stage) {
-        FlowPane pane = new FlowPane(percentageTile, clockTile, gaugeTile, sparkLineTile, areaChartTile,
+        FlowPane pane = new FlowPane(Orientation.HORIZONTAL, 5, 5, percentageTile, clockTile, gaugeTile, sparkLineTile, areaChartTile,
                                      lineChartTile, timerControlTile, numberTile, textTile,
                                      highLowTile, plusMinusTile, sliderTile, switchTile, worldTile, timeTile,
-                                     barChartTile, customTile, leaderBoardTile,
+                                     barChartTile, customTile, leaderBoardTile, mapTile, radialChartTile,
                                      ikonliTile, slimTile, dashboardTile, digitalTile,
                                      simpleDigitalTile, indicatorTile, simpleSectionTile,
                                      bulletChartTile, slimClockTile, spaceXTile,
                                      regulatorTile, feedbackRegulatorTile, colorRegulatorTile);
-        pane.setPadding(new Insets(10));
-        pane.setHgap(10);
-        pane.setVgap(10);
-        pane.setCenterShape(true);
-        pane.setPrefSize(1270,  1060);
+        pane.setPadding(new Insets(5));
+        pane.setPrefSize(1245,  780);
         pane.setBackground(new Background(new BackgroundFill(Tile.BACKGROUND.darker(), CornerRadii.EMPTY, Insets.EMPTY)));
 
         Scene scene = new Scene(pane);
