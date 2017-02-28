@@ -87,6 +87,7 @@ public class Main extends Application {
     private Tile              leaderBoardTile;
     private Tile              mapTile;
     private Tile              radialChartTile;
+    private Tile              donutChartTile;
     private FontIcon          icon;
     private Tile              ikonliTile;
     private Gauge             indicatorGauge;
@@ -391,6 +392,15 @@ public class Main extends Application {
                                      .radialChartData(chartData1, chartData2, chartData3, chartData4)
                                      .build();
 
+        donutChartTile = TileBuilder.create()
+                                     .skinType(SkinType.DONUT_CHART)
+                                     .prefSize(TILE_SIZE, TILE_SIZE)
+                                     .title("DonutChart Tile")
+                                     .text("Whatever text")
+                                     .textVisible(false)
+                                     .radialChartData(chartData1, chartData2, chartData3, chartData4)
+                                     .build();
+
         icon = new FontIcon(SNOW);
         icon.setIconSize((int) TILE_SIZE);
         icon.setFill(Tile.FOREGROUND);
@@ -597,7 +607,7 @@ public class Main extends Application {
         FlowPane pane = new FlowPane(Orientation.HORIZONTAL, 5, 5, percentageTile, clockTile, gaugeTile, sparkLineTile, areaChartTile,
                                      lineChartTile, timerControlTile, numberTile, textTile,
                                      highLowTile, plusMinusTile, sliderTile, switchTile, worldTile, timeTile,
-                                     barChartTile, customTile, leaderBoardTile, mapTile, radialChartTile,
+                                     barChartTile, customTile, leaderBoardTile, mapTile, radialChartTile, donutChartTile,
                                      ikonliTile, slimTile, dashboardTile, digitalTile,
                                      simpleDigitalTile, indicatorTile, simpleSectionTile,
                                      bulletChartTile, slimClockTile, spaceXTile,
