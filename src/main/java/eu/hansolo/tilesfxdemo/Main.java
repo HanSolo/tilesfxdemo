@@ -14,6 +14,7 @@ import eu.hansolo.medusa.GaugeBuilder;
 import eu.hansolo.medusa.Section;
 import eu.hansolo.tilesfx.Country;
 import eu.hansolo.tilesfx.Tile;
+import eu.hansolo.tilesfx.Tile.MapProvider;
 import eu.hansolo.tilesfx.Tile.SkinType;
 import eu.hansolo.tilesfx.Tile.TileColor;
 import eu.hansolo.tilesfx.TileBuilder;
@@ -381,6 +382,7 @@ public class Main extends Application {
                              .pointsOfInterest(new Location(51.914405, 7.635732, "POI 1", TileColor.RED),
                                                new Location(51.912529, 7.631752, "POI 2", TileColor.BLUE),
                                                new Location(51.923993, 7.628906, "POI 3", TileColor.YELLOW_ORANGE))
+                             .mapProvider(MapProvider.STREET)
                              .build();
 
         radialChartTile = TileBuilder.create()
