@@ -89,6 +89,7 @@ public class Main extends Application {
     private Tile              mapTile;
     private Tile              radialChartTile;
     private Tile              donutChartTile;
+    private Tile              circularProgressTile;
     private FontIcon          icon;
     private Tile              ikonliTile;
     private Gauge             indicatorGauge;
@@ -403,6 +404,15 @@ public class Main extends Application {
                                      .radialChartData(chartData1, chartData2, chartData3, chartData4)
                                      .build();
 
+        circularProgressTile = TileBuilder.create()
+                                          .skinType(SkinType.CIRCULAR_PROGRESS)
+                                          .prefSize(TILE_SIZE, TILE_SIZE)
+                                          .title("CircularProgress Tile")
+                                          .text("Whatever text")
+                                          .unit("\u0025")
+                                          .animated(true)
+                                          .build();
+
         icon = new FontIcon(SNOW);
         icon.setIconSize((int) TILE_SIZE);
         icon.setFill(Tile.FOREGROUND);
@@ -574,6 +584,8 @@ public class Main extends Application {
 
                     leaderBoardTile.getLeaderBoardItems().get(RND.nextInt(3)).setValue(RND.nextDouble() * 80);
 
+                    circularProgressTile.setValue(RND.nextDouble() * 120);
+
                     chartData1.setValue(RND.nextDouble() * 50);
                     chartData2.setValue(RND.nextDouble() * 50);
                     chartData3.setValue(RND.nextDouble() * 50);
@@ -609,7 +621,8 @@ public class Main extends Application {
         FlowPane pane = new FlowPane(Orientation.HORIZONTAL, 5, 5, percentageTile, clockTile, gaugeTile, sparkLineTile, areaChartTile,
                                      lineChartTile, timerControlTile, numberTile, textTile,
                                      highLowTile, plusMinusTile, sliderTile, switchTile, worldTile, timeTile,
-                                     barChartTile, customTile, leaderBoardTile, mapTile, radialChartTile, donutChartTile,
+                                     barChartTile, customTile, leaderBoardTile, mapTile, radialChartTile,
+                                     donutChartTile, circularProgressTile,
                                      ikonliTile, slimTile, dashboardTile, digitalTile,
                                      simpleDigitalTile, indicatorTile, simpleSectionTile,
                                      bulletChartTile, slimClockTile, spaceXTile,
