@@ -1,17 +1,5 @@
 package eu.hansolo.tilesfxdemo;
 
-import eu.hansolo.fx.regulators.ColorRegulator;
-import eu.hansolo.fx.regulators.ColorRegulatorBuilder;
-import eu.hansolo.fx.regulators.FeedbackRegulator;
-import eu.hansolo.fx.regulators.FeedbackRegulatorBuilder;
-import eu.hansolo.fx.regulators.Regulator;
-import eu.hansolo.fx.regulators.RegulatorBuilder;
-import eu.hansolo.medusa.Clock;
-import eu.hansolo.medusa.Clock.ClockSkinType;
-import eu.hansolo.medusa.ClockBuilder;
-import eu.hansolo.medusa.Gauge;
-import eu.hansolo.medusa.GaugeBuilder;
-import eu.hansolo.medusa.Section;
 import eu.hansolo.tilesfx.Country;
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.Tile.MapProvider;
@@ -20,9 +8,10 @@ import eu.hansolo.tilesfx.Tile.TileColor;
 import eu.hansolo.tilesfx.TileBuilder;
 import eu.hansolo.tilesfx.TimeSection;
 import eu.hansolo.tilesfx.TimeSectionBuilder;
+import eu.hansolo.tilesfx.chart.ChartData;
+import eu.hansolo.tilesfx.chart.RadarChart.Mode;
 import eu.hansolo.tilesfx.skins.BarChartItem;
 import eu.hansolo.tilesfx.skins.LeaderBoardItem;
-import eu.hansolo.tilesfx.tools.ChartData;
 import eu.hansolo.tilesfx.tools.FlowGridPane;
 import eu.hansolo.tilesfx.tools.Location;
 import javafx.animation.AnimationTimer;
@@ -37,13 +26,10 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Stop;
 import javafx.stage.Stage;
-import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.time.LocalTime;
 import java.util.Locale;
 import java.util.Random;
-
-import static org.kordamp.ikonli.weathericons.WeatherIcons.SNOW;
 
 
 /**
@@ -53,44 +39,52 @@ public class Overview extends Application {
     private static final double TILE_SIZE = 150;
     private static final Random RND       = new Random();
 
-    private BarChartItem      barChartItem1;
-    private BarChartItem      barChartItem2;
-    private BarChartItem      barChartItem3;
-    private BarChartItem      barChartItem4;
-    private LeaderBoardItem   leaderBoardItem1;
-    private LeaderBoardItem   leaderBoardItem2;
-    private LeaderBoardItem   leaderBoardItem3;
-    private LeaderBoardItem   leaderBoardItem4;
-    private ChartData         chartData1;
-    private ChartData         chartData2;
-    private ChartData         chartData3;
-    private ChartData         chartData4;
-    private Tile              percentageTile;
-    private Tile              clockTile;
-    private Tile              gaugeTile;
-    private Tile              sparkLineTile;
-    private Tile              areaChartTile;
-    private Tile              lineChartTile;
-    private Tile              highLowTile;
-    private Tile              timerControlTile;
-    private Tile              numberTile;
-    private Tile              textTile;
-    private Tile              plusMinusTile;
-    private Tile              sliderTile;
-    private Tile              switchTile;
-    private Tile              worldTile;
-    private Tile              timeTile;
-    private Tile              barChartTile;
-    private Tile              customTile;
-    private Tile              leaderBoardTile;
-    private Tile              mapTile;
-    private Tile              radialChartTile;
-    private Tile              donutChartTile;
-    private Tile              circularProgressTile;
-    private Tile              stockTile;
-    private Tile              gaugeSparkLineTile;
-    private long              lastTimerCall;
-    private AnimationTimer    timer;
+    private BarChartItem    barChartItem1;
+    private BarChartItem    barChartItem2;
+    private BarChartItem    barChartItem3;
+    private BarChartItem    barChartItem4;
+    private LeaderBoardItem leaderBoardItem1;
+    private LeaderBoardItem leaderBoardItem2;
+    private LeaderBoardItem leaderBoardItem3;
+    private LeaderBoardItem leaderBoardItem4;
+    private ChartData       chartData1;
+    private ChartData       chartData2;
+    private ChartData       chartData3;
+    private ChartData       chartData4;
+    private ChartData       chartData5;
+    private ChartData       chartData6;
+    private ChartData       chartData7;
+    private ChartData       chartData8;
+    private Tile            percentageTile;
+    private Tile            clockTile;
+    private Tile            gaugeTile;
+    private Tile            sparkLineTile;
+    private Tile            areaChartTile;
+    private Tile            lineChartTile;
+    private Tile            highLowTile;
+    private Tile            timerControlTile;
+    private Tile            numberTile;
+    private Tile            textTile;
+    private Tile            plusMinusTile;
+    private Tile            sliderTile;
+    private Tile            switchTile;
+    private Tile            worldTile;
+    private Tile            timeTile;
+    private Tile            barChartTile;
+    private Tile            customTile;
+    private Tile            leaderBoardTile;
+    private Tile            mapTile;
+    private Tile            radialChartTile;
+    private Tile            donutChartTile;
+    private Tile            circularProgressTile;
+    private Tile            stockTile;
+    private Tile            gaugeSparkLineTile;
+    private Tile            radarChartTile1;
+    private Tile            radarChartTile2;
+    private Tile            smoothAreaChartTile;
+    private Tile            countryTile;
+    private long            lastTimerCall;
+    private AnimationTimer  timer;
 
 
     @Override public void init() {
@@ -174,6 +168,10 @@ public class Overview extends Application {
         chartData2 = new ChartData("Item 2", 10.0, Tile.BLUE);
         chartData3 = new ChartData("Item 3", 12.0, Tile.RED);
         chartData4 = new ChartData("Item 4", 13.0, Tile.YELLOW_ORANGE);
+        chartData5 = new ChartData("Item 5", 13.0, Tile.BLUE);
+        chartData6 = new ChartData("Item 6", 13.0, Tile.BLUE);
+        chartData7 = new ChartData("Item 7", 13.0, Tile.BLUE);
+        chartData8 = new ChartData("Item 8", 13.0, Tile.BLUE);
 
         // Creating Tiles
         percentageTile = TileBuilder.create()
@@ -365,7 +363,7 @@ public class Overview extends Application {
                                      .title("RadialChart Tile")
                                      .text("Whatever text")
                                      .textVisible(false)
-                                     .radialChartData(chartData1, chartData2, chartData3, chartData4)
+                                     .chartData(chartData1, chartData2, chartData3, chartData4)
                                      .build();
 
         donutChartTile = TileBuilder.create()
@@ -374,7 +372,7 @@ public class Overview extends Application {
                                     .title("DonutChart Tile")
                                     .text("Whatever text")
                                     .textVisible(false)
-                                    .radialChartData(chartData1, chartData2, chartData3, chartData4)
+                                    .chartData(chartData1, chartData2, chartData3, chartData4)
                                     .build();
 
         circularProgressTile = TileBuilder.create()
@@ -418,6 +416,79 @@ public class Overview extends Application {
                                                        new Stop(1.0, Tile.LIGHT_RED))
                                         .build();
 
+        radarChartTile1 = TileBuilder.create().skinType(SkinType.RADAR_CHART)
+                                     .prefSize(TILE_SIZE, TILE_SIZE)
+                                     .minValue(0)
+                                     .maxValue(50)
+                                     .title("RadarChart Sector")
+                                     .unit("Unit")
+                                     .radarChartMode(Mode.SECTOR)
+                                     .gradientStops(new Stop(0.00000, Color.TRANSPARENT),
+                                                    new Stop(0.00001, Color.web("#3552a0")),
+                                                    new Stop(0.09090, Color.web("#456acf")),
+                                                    new Stop(0.27272, Color.web("#45a1cf")),
+                                                    new Stop(0.36363, Color.web("#30c8c9")),
+                                                    new Stop(0.45454, Color.web("#30c9af")),
+                                                    new Stop(0.50909, Color.web("#56d483")),
+                                                    new Stop(0.72727, Color.web("#9adb49")),
+                                                    new Stop(0.81818, Color.web("#efd750")),
+                                                    new Stop(0.90909, Color.web("#ef9850")),
+                                                    new Stop(1.00000, Color.web("#ef6050")))
+                                     .text("Test")
+                                     .chartData(chartData1, chartData2, chartData3, chartData4,
+                                                chartData5, chartData6, chartData7, chartData8)
+                                     .tooltipText("")
+                                     .animated(true)
+                                     .build();
+
+        radarChartTile2 = TileBuilder.create().skinType(SkinType.RADAR_CHART)
+                                     .prefSize(TILE_SIZE, TILE_SIZE)
+                                     .minValue(0)
+                                     .maxValue(50)
+                                     .title("RadarChart Polygon")
+                                     .unit("Unit")
+                                     .radarChartMode(Mode.POLYGON)
+                                     .gradientStops(new Stop(0.00000, Color.TRANSPARENT),
+                                                    new Stop(0.00001, Color.web("#3552a0")),
+                                                    new Stop(0.09090, Color.web("#456acf")),
+                                                    new Stop(0.27272, Color.web("#45a1cf")),
+                                                    new Stop(0.36363, Color.web("#30c8c9")),
+                                                    new Stop(0.45454, Color.web("#30c9af")),
+                                                    new Stop(0.50909, Color.web("#56d483")),
+                                                    new Stop(0.72727, Color.web("#9adb49")),
+                                                    new Stop(0.81818, Color.web("#efd750")),
+                                                    new Stop(0.90909, Color.web("#ef9850")),
+                                                    new Stop(1.00000, Color.web("#ef6050")))
+                                     .text("Test")
+                                     .chartData(chartData1, chartData2, chartData3, chartData4,
+                                                chartData5, chartData6, chartData7, chartData8)
+                                     .tooltipText("")
+                                     .animated(true)
+                                     .build();
+
+        smoothAreaChartTile = TileBuilder.create().skinType(SkinType.SMOOTH_AREA_CHART)
+                                         .prefSize(TILE_SIZE, TILE_SIZE)
+                                         .minValue(0)
+                                         .maxValue(40)
+                                         .title("SmoothAreaChart")
+                                         .unit("Unit")
+                                         .text("Test")
+                                         .chartData(chartData1, chartData2, chartData3, chartData4)
+                                         .tooltipText("")
+                                         .animated(true)
+                                         .build();
+
+        countryTile = TileBuilder.create().skinType(SkinType.COUNTRY)
+                                 .prefSize(TILE_SIZE, TILE_SIZE)
+                                 .minValue(0)
+                                 .maxValue(40)
+                                 .title("Country")
+                                 .unit("Unit")
+                                 .country(Country.DE)
+                                 .tooltipText("")
+                                 .animated(true)
+                                 .build();
+
         //lastStockCall = System.nanoTime();
         lastTimerCall = System.nanoTime();
         timer = new AnimationTimer() {
@@ -447,7 +518,13 @@ public class Overview extends Application {
                     chartData2.setValue(RND.nextDouble() * 50);
                     chartData3.setValue(RND.nextDouble() * 50);
                     chartData4.setValue(RND.nextDouble() * 50);
+                    chartData5.setValue(RND.nextDouble() * 50);
+                    chartData6.setValue(RND.nextDouble() * 50);
+                    chartData7.setValue(RND.nextDouble() * 50);
+                    chartData8.setValue(RND.nextDouble() * 50);
 
+                    gaugeSparkLineTile.setValue(RND.nextDouble() * 100);
+                    countryTile.setValue(RND.nextDouble() * 100);
 
                     lastTimerCall = now;
                 }
@@ -456,11 +533,13 @@ public class Overview extends Application {
     }
 
     @Override public void start(Stage stage) {
-        FlowGridPane pane = new FlowGridPane(6, 6, percentageTile, clockTile, gaugeTile, sparkLineTile, areaChartTile,
+        FlowGridPane pane = new FlowGridPane(7, 4,
+                                             percentageTile, clockTile, gaugeTile, sparkLineTile, areaChartTile,
                                              lineChartTile, timerControlTile, numberTile, textTile,
                                              highLowTile, plusMinusTile, sliderTile, switchTile, worldTile, timeTile,
                                              barChartTile, customTile, leaderBoardTile, mapTile, radialChartTile,
-                                             donutChartTile, circularProgressTile, stockTile, gaugeSparkLineTile);
+                                             donutChartTile, circularProgressTile, stockTile, gaugeSparkLineTile,
+                                             radarChartTile1, radarChartTile2, smoothAreaChartTile, countryTile);
         pane.setHgap(5);
         pane.setVgap(5);
         pane.setPadding(new Insets(5));

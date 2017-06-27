@@ -11,6 +11,11 @@ task Demo(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
 }
 
+task Overview(type: JavaExec) {
+    main = "eu.hansolo.tilesfxdemo.Overview"
+    classpath = sourceSets.main.runtimeClasspath
+}
+
 repositories {
     mavenCentral()
 }
