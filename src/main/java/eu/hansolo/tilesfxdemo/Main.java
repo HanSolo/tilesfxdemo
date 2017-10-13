@@ -366,6 +366,8 @@ public class Main extends Application {
                               .textVisible(true)
                               .build();
 
+        barChartItem1.setFormatString("%.2f");
+
         barChartTile = TileBuilder.create()
                                   .prefSize(TILE_SIZE, TILE_SIZE)
                                   .skinType(SkinType.BAR_CHART)
