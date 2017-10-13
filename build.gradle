@@ -16,6 +16,11 @@ task Overview(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
 }
 
+task Countdown(type: JavaExec) {
+    main = "eu.hansolo.tilesfxdemo.Countdown"
+    classpath = sourceSets.main.runtimeClasspath
+}
+
 repositories {
     mavenCentral()
 }
