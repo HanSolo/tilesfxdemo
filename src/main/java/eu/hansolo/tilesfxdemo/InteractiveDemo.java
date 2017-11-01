@@ -39,7 +39,7 @@ public class InteractiveDemo extends Application {
     private static       int                noOfNodes = 0;
     private              Tile               worldTile;
     private              Tile               countryTile;
-    private              Tile                   sliderTile;
+    private              Tile               sliderTile;
     private              Tile               smoothAreaTile;
     private              Tile               donutTile;
     private              Tile               bargraphTile;
@@ -98,7 +98,7 @@ public class InteractiveDemo extends Application {
                                  .build();
 
         sliderTile = TileBuilder.create().skinType(SkinType.SLIDER)
-                                .prefSize(600, 450)
+                                .prefSize(600, 400)
                                 .title("Selected Year")
                                 .decimals(0)
                                 .minValue(2008)
@@ -129,7 +129,7 @@ public class InteractiveDemo extends Application {
                                     .build();
 
         bargraphTile = TileBuilder.create().skinType(SkinType.BAR_CHART)
-                                  .prefSize(400, 450)
+                                  .prefSize(400, 400)
                                   .title("Highest in 2017")
                                   .decimals(0)
                                   .animated(true)
