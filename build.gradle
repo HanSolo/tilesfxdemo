@@ -21,6 +21,21 @@ task Countdown(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
 }
 
+task Interactive(type: JavaExec) {
+    main = "eu.hansolo.tilesfxdemo.InteractiveDemo"
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task Calendar(type: JavaExec) {
+    main = "eu.hansolo.tilesfxdemo.CalendarTileDemo"
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task Matrix(type: JavaExec) {
+    main = "eu.hansolo.tilesfxdemo.MatrixTileDemo"
+    classpath = sourceSets.main.runtimeClasspath
+}
+
 repositories {
     mavenCentral()
 }
