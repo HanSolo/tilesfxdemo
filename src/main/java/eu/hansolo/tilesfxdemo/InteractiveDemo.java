@@ -1,6 +1,6 @@
 package eu.hansolo.tilesfxdemo;
 
-import eu.hansolo.tilesfx.Country;
+
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.Tile.SkinType;
 import eu.hansolo.tilesfx.TileBuilder;
@@ -9,8 +9,10 @@ import eu.hansolo.tilesfx.chart.ChartData;
 import eu.hansolo.tilesfx.events.TileEvent;
 import eu.hansolo.tilesfx.events.TileEvent.EventType;
 import eu.hansolo.tilesfx.skins.BarChartItem;
+import eu.hansolo.tilesfx.tools.Country;
 import eu.hansolo.tilesfx.tools.FlowGridPane;
 import eu.hansolo.tilesfx.tools.Helper;
+import eu.hansolo.tilesfx.tools.LocationBuilder;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -86,6 +88,11 @@ public class InteractiveDemo extends Application {
                                .title("World Data 2017")
                                .text("Some data")
                                .textVisible(false)
+                               .pointsOfInterest(LocationBuilder.create()
+                                                                .name("Home")
+                                                                .latitude(51.9065938)
+                                                                .longitude(7.6352688)
+                                                                .build())
                                .build();
 
         countryTile = TileBuilder.create().skinType(SkinType.COUNTRY)

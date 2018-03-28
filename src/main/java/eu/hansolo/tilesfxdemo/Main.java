@@ -12,8 +12,8 @@ import eu.hansolo.medusa.ClockBuilder;
 import eu.hansolo.medusa.Gauge;
 import eu.hansolo.medusa.GaugeBuilder;
 import eu.hansolo.medusa.Section;
-import eu.hansolo.tilesfx.Country;
 import eu.hansolo.tilesfx.Tile;
+import eu.hansolo.tilesfx.Tile.ChartType;
 import eu.hansolo.tilesfx.Tile.MapProvider;
 import eu.hansolo.tilesfx.Tile.SkinType;
 import eu.hansolo.tilesfx.Tile.TileColor;
@@ -24,6 +24,7 @@ import eu.hansolo.tilesfx.chart.ChartData;
 import eu.hansolo.tilesfx.chart.RadarChart.Mode;
 import eu.hansolo.tilesfx.skins.BarChartItem;
 import eu.hansolo.tilesfx.skins.LeaderBoardItem;
+import eu.hansolo.tilesfx.tools.Country;
 import eu.hansolo.tilesfx.tools.FlowGridPane;
 import eu.hansolo.tilesfx.tools.Location;
 import javafx.animation.AnimationTimer;
@@ -262,14 +263,16 @@ public class Main extends Application {
 
         areaChartTile = TileBuilder.create()
                                    .prefSize(TILE_SIZE, TILE_SIZE)
-                                   .skinType(SkinType.AREA_CHART)
+                                   .skinType(SkinType.SMOOTHED_CHART)
+                                   .chartType(ChartType.AREA)
                                    .title("AreaChart Tile")
                                    .series(series1)
                                    .build();
 
         lineChartTile = TileBuilder.create()
                                    .prefSize(TILE_SIZE, TILE_SIZE)
-                                   .skinType(SkinType.LINE_CHART)
+                                   .skinType(SkinType.SMOOTHED_CHART)
+                                   .chartType(ChartType.LINE)
                                    .title("LineChart Tile")
                                    .series(series2, series3)
                                    .build();
@@ -400,10 +403,10 @@ public class Main extends Application {
                              .title("Map Tile")
                              .text("Whatever text")
                              .description("Description")
-                             .currentLocation(new Location(51.91178, 7.63379, "Home", TileColor.MAGENTA))
-                             .pointsOfInterest(new Location(51.914405, 7.635732, "POI 1", TileColor.RED),
-                                               new Location(51.912529, 7.631752, "POI 2", TileColor.BLUE),
-                                               new Location(51.923993, 7.628906, "POI 3", TileColor.YELLOW_ORANGE))
+                             .currentLocation(new Location(51.91178, 7.63379, "Home", TileColor.MAGENTA.color))
+                             .pointsOfInterest(new Location(51.914405, 7.635732, "POI 1", TileColor.RED.color),
+                                               new Location(51.912529, 7.631752, "POI 2", TileColor.BLUE.color),
+                                               new Location(51.923993, 7.628906, "POI 3", TileColor.YELLOW_ORANGE.color))
                              .mapProvider(MapProvider.STREET)
                              .build();
 

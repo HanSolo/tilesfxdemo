@@ -1,7 +1,7 @@
 package eu.hansolo.tilesfxdemo;
 
-import eu.hansolo.tilesfx.Country;
 import eu.hansolo.tilesfx.Tile;
+import eu.hansolo.tilesfx.Tile.ChartType;
 import eu.hansolo.tilesfx.Tile.MapProvider;
 import eu.hansolo.tilesfx.Tile.SkinType;
 import eu.hansolo.tilesfx.Tile.TileColor;
@@ -13,6 +13,7 @@ import eu.hansolo.tilesfx.chart.RadarChart.Mode;
 import eu.hansolo.tilesfx.chart.SunburstChart.TextOrientation;
 import eu.hansolo.tilesfx.skins.BarChartItem;
 import eu.hansolo.tilesfx.skins.LeaderBoardItem;
+import eu.hansolo.tilesfx.tools.Country;
 import eu.hansolo.tilesfx.tools.FlowGridPane;
 import eu.hansolo.tilesfx.tools.Helper;
 import eu.hansolo.tilesfx.tools.Location;
@@ -38,6 +39,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Stop;
+import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
@@ -120,6 +122,8 @@ public class Overview extends Application {
 
 
     @Override public void init() {
+        Font customFont = Font.loadFont(MiscDemo.class.getResourceAsStream("digital-7.ttf"), 10);
+
         value = new SimpleDoubleProperty(0);
 
         // LineChart Data
@@ -259,14 +263,16 @@ public class Overview extends Application {
         //sparkLineTile.valueProperty().bind(value);
 
         areaChartTile = TileBuilder.create()
-                                   .skinType(SkinType.AREA_CHART)
+                                   .skinType(SkinType.SMOOTHED_CHART)
+                                   .chartType(ChartType.AREA)
                                    .prefSize(TILE_WIDTH, TILE_HEIGHT)
                                    .title("AreaChart Tile")
                                    .series(series1)
                                    .build();
 
         lineChartTile = TileBuilder.create()
-                                   .skinType(SkinType.LINE_CHART)
+                                   .skinType(SkinType.SMOOTHED_CHART)
+                                   .chartType(ChartType.LINE)
                                    .prefSize(TILE_WIDTH, TILE_HEIGHT)
                                    .title("LineChart Tile")
                                    .series(series2, series3)
@@ -406,10 +412,10 @@ public class Overview extends Application {
                              .title("Map")
                              .text("Some text")
                              .description("Description")
-                             .currentLocation(new Location(51.91178, 7.63379, "Home", TileColor.MAGENTA))
-                             .pointsOfInterest(new Location(51.914405, 7.635732, "POI 1", TileColor.RED),
-                                               new Location(51.912529, 7.631752, "POI 2", TileColor.BLUE),
-                                               new Location(51.923993, 7.628906, "POI 3", TileColor.YELLOW_ORANGE))
+                             .currentLocation(new Location(51.91178, 7.63379, "Home", TileColor.MAGENTA.color))
+                             .pointsOfInterest(new Location(51.914405, 7.635732, "POI 1", TileColor.RED.color),
+                                               new Location(51.912529, 7.631752, "POI 2", TileColor.BLUE.color),
+                                               new Location(51.923993, 7.628906, "POI 3", TileColor.YELLOW_ORANGE.color))
                              .mapProvider(MapProvider.TOPO)
                              .build();
 
