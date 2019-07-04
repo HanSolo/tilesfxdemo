@@ -48,7 +48,7 @@ repositories {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     //compile "eu.hansolo:tilesfx:+"
-    compile "eu.hansolo:Medusa:+"
+    //compile "eu.hansolo:Medusa:+"
     compile "eu.hansolo:regulators:+"
     compile "org.kordamp.ikonli:ikonli-javafx:2.4.0"
     compile "org.kordamp.ikonli:ikonli-material-pack:2.4.0"

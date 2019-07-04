@@ -12,14 +12,12 @@ import eu.hansolo.tilesfx.TimeSectionBuilder;
 import eu.hansolo.tilesfx.addons.Indicator;
 import eu.hansolo.tilesfx.chart.ChartData;
 import eu.hansolo.tilesfx.chart.RadarChart.Mode;
-import eu.hansolo.tilesfx.chart.SunburstChart.TextOrientation;
 import eu.hansolo.tilesfx.skins.BarChartItem;
 import eu.hansolo.tilesfx.skins.LeaderBoardItem;
 import eu.hansolo.tilesfx.tools.Country;
 import eu.hansolo.tilesfx.tools.FlowGridPane;
 import eu.hansolo.tilesfx.tools.Helper;
 import eu.hansolo.tilesfx.tools.Location;
-import eu.hansolo.tilesfx.tools.TreeNode;
 import eu.hansolo.tilesfx.weather.DarkSky;
 import eu.hansolo.tilesfx.weather.DarkSky.Language;
 import eu.hansolo.tilesfx.weather.DarkSky.Unit;
@@ -116,7 +114,6 @@ public class Overview extends Application {
     private Tile            switchSliderTile;
     private Tile            dateTile;
     private Tile            calendarTile;
-    private Tile            sunburstTile;
     private Tile            matrixTile;
     private Tile            radialPercentageTile;
     private Tile            statusTile;
@@ -597,37 +594,6 @@ public class Overview extends Application {
                                   .prefSize(TILE_WIDTH, TILE_HEIGHT)
                                   .build();
 
-        TreeNode tree   = new TreeNode(new ChartData("ROOT"));
-        TreeNode first  = new TreeNode(new ChartData("1st", 8.3, Tile.BLUE), tree);
-        TreeNode second = new TreeNode(new ChartData("2nd", 2.2, Tile.ORANGE), tree);
-        TreeNode third  = new TreeNode(new ChartData("3rd", 1.4, Tile.PINK), tree);
-        TreeNode fourth = new TreeNode(new ChartData("4th", 1.2, Tile.LIGHT_GREEN), tree);
-
-        TreeNode jan = new TreeNode(new ChartData("Jan", 3.5), first);
-        TreeNode feb = new TreeNode(new ChartData("Feb", 3.1), first);
-        TreeNode mar = new TreeNode(new ChartData("Mar", 1.7), first);
-        TreeNode apr = new TreeNode(new ChartData("Apr", 1.1), second);
-        TreeNode may = new TreeNode(new ChartData("May", 0.8), second);
-        TreeNode jun = new TreeNode(new ChartData("Jun", 0.3), second);
-        TreeNode jul = new TreeNode(new ChartData("Jul", 0.7), third);
-        TreeNode aug = new TreeNode(new ChartData("Aug", 0.6), third);
-        TreeNode sep = new TreeNode(new ChartData("Sep", 0.1), third);
-        TreeNode oct = new TreeNode(new ChartData("Oct", 0.5), fourth);
-        TreeNode nov = new TreeNode(new ChartData("Nov", 0.4), fourth);
-        TreeNode dec = new TreeNode(new ChartData("Dec", 0.3), fourth);
-
-
-        sunburstTile = TileBuilder.create().skinType(SkinType.SUNBURST)
-                                  .prefSize(TILE_WIDTH, TILE_HEIGHT)
-                                  .title("SunburstTile")
-                                  .textVisible(false)
-                                  .sunburstTree(tree)
-                                  .sunburstBackgroundColor(Tile.BACKGROUND)
-                                  .sunburstTextColor(Tile.BACKGROUND)
-                                  .sunburstUseColorFromParent(true)
-                                  .sunburstTextOrientation(TextOrientation.TANGENT)
-                                  .build();
-
         matrixTile = TileBuilder.create().skinType(SkinType.MATRIX)
                                 .prefSize(TILE_WIDTH, TILE_HEIGHT)
                                 .title("MatrixTileSkin")
@@ -757,7 +723,7 @@ public class Overview extends Application {
                                              radialChartTile, donutChartTile, circularProgressTile, stockTile,
                                              gaugeSparkLineTile, radarChartTile1, radarChartTile2,
                                              smoothAreaChartTile, countryTile, ephemerisTile, characterTile,
-                                             flipTile, switchSliderTile, dateTile, calendarTile, sunburstTile,
+                                             flipTile, switchSliderTile, dateTile, calendarTile,
                                              matrixTile, radialPercentageTile, statusTile, imageTile);//, weatherTile);
 
         pane.setHgap(5);
