@@ -1,58 +1,152 @@
-group 'eu.hansolo'
-version '1.0-SNAPSHOT'
+import java.text.SimpleDateFormat
 
-apply plugin: 'java'
+buildscript {
+    repositories {
+        jcenter()
+        /*
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        */
+    }
+    dependencies {
+        classpath 'biz.aQute.bnd:biz.aQute.bnd.gradle:4.3.1'
+        classpath 'com.google.gradle:osdetector-gradle-plugin:1.6.2'
+        classpath 'org.javamodularity:moduleplugin:1.6.0'
+        classpath 'org.beryx:badass-jlink-plugin:2.16.4'
+    }
+}
 
-sourceCompatibility = 1.8
+plugins {
+    id 'idea'
+    id 'java-library'
+    id 'application'
+    id 'com.google.osdetector' version '1.6.2'
+    id 'org.javamodularity.moduleplugin' version '1.6.0'
+    id 'org.beryx.jlink' version '2.17.2'
+    id 'maven-publish'
+    id 'net.nemerosa.versioning' version '2.10.0'
+    id 'com.jfrog.bintray' version '1.8.5'
+}
+
+apply plugin: 'biz.aQute.bnd.builder'
+
+sourceCompatibility = '11'
+
+wrapper {
+    gradleVersion = '6.4'
+}
+
+description = 'A little demo of TilesFx in combination with other libraries'
+
+Date buildTimeAndDate = new Date()
+ext {
+    buildDate = new SimpleDateFormat('yyyy-MM-dd').format(buildTimeAndDate)
+    buildTime = new SimpleDateFormat('HH:mm:ss.SSSZ').format(buildTimeAndDate)
+}
+
+group 'eu.hansolo.tilesfxdemo'
+version '11.0'
+
+ext.platform = osdetector.os == 'osx' ? 'mac' : osdetector.os == 'windows' ? 'win' : osdetector.os
+
+repositories {
+    flatDir {
+        dir 'libs'
+    }
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.openjfx:javafx-base:11:$platform"
+    implementation "org.openjfx:javafx-graphics:11:$platform"
+    implementation "org.openjfx:javafx-controls:11:$platform"
+    implementation "org.openjfx:javafx-web:11:$platform"
+    implementation "org.openjfx:javafx-media:11:$platform"
+    implementation ('eu.hansolo:tilesfx:11.40') {
+        exclude group: 'org.openjfx'
+    }
+    implementation ('eu.hansolo:Medusa:11.5') {
+        exclude group: 'org.openjfx'
+    }
+    implementation ('eu.hansolo:regulators:11.7') {
+        exclude group: 'org.openjfx'
+    }
+    implementation 'org.kordamp.ikonli:ikonli-core:11.5.0'
+    implementation 'org.kordamp.ikonli:ikonli-javafx:11.5.0'
+    implementation 'org.kordamp.ikonli:ikonli-material-pack:11.5.0'
+    implementation 'org.kordamp.ikonli:ikonli-materialdesign-pack:11.5.0'
+    implementation 'org.kordamp.ikonli:ikonli-fontawesome-pack:11.5.0'
+    implementation 'org.kordamp.ikonli:ikonli-weathericons-pack:11.5.0'
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+}
+
 
 // start the demo from gradle
+task Main(type: JavaExec) {
+    main = "eu.hansolo.tilesfxdemo.MainLauncher"
+    classpath = sourceSets.main.runtimeClasspath
+}
+
 task Demo(type: JavaExec) {
-    main = "eu.hansolo.tilesfxdemo.Main"
+    main = "eu.hansolo.tilesfxdemo.DemoLauncher"
     classpath = sourceSets.main.runtimeClasspath
 }
 
 task Overview(type: JavaExec) {
-    main = "eu.hansolo.tilesfxdemo.Overview"
+    main = "eu.hansolo.tilesfxdemo.OverviewLauncher"
     classpath = sourceSets.main.runtimeClasspath
 }
 
 task Countdown(type: JavaExec) {
-    main = "eu.hansolo.tilesfxdemo.Countdown"
+    main = "eu.hansolo.tilesfxdemo.CountdownLauncher"
     classpath = sourceSets.main.runtimeClasspath
 }
 
 task Interactive(type: JavaExec) {
-    main = "eu.hansolo.tilesfxdemo.InteractiveDemo"
+    main = "eu.hansolo.tilesfxdemo.InteractiveDemoLauncher"
     classpath = sourceSets.main.runtimeClasspath
 }
 
 task Calendar(type: JavaExec) {
-    main = "eu.hansolo.tilesfxdemo.CalendarTileDemo"
+    main = "eu.hansolo.tilesfxdemo.CalendarTileDemoLauncher"
     classpath = sourceSets.main.runtimeClasspath
 }
 
 task Matrix(type: JavaExec) {
-    main = "eu.hansolo.tilesfxdemo.MatrixTileDemo"
+    main = "eu.hansolo.tilesfxdemo.MatrixTileDemoLauncher"
     classpath = sourceSets.main.runtimeClasspath
 }
 
 task Control(type: JavaExec) {
-    main = "eu.hansolo.tilesfxdemo.ControlDemo"
+    main = "eu.hansolo.tilesfxdemo.ControlDemoLauncher"
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task Misc(type: JavaExec) {
+    main = "eu.hansolo.tilesfxdemo.MiscDemoLauncher"
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task Layout(type: JavaExec) {
+    main = "eu.hansolo.tilesfxdemo.LayoutDemoLauncher"
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task WorldmapTile(type: JavaExec) {
+    main = "eu.hansolo.tilesfxdemo.WorldmapTileDemoLauncher"
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task TouchSlider(type: JavaExec) {
+    main = "eu.hansolo.tilesfxdemo.TouchSliderDemoLauncher"
     classpath = sourceSets.main.runtimeClasspath
 }
 
 repositories {
     mavenCentral()
-}
-
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    //compile "eu.hansolo:tilesfx:+"
-    //compile "eu.hansolo:Medusa:+"
-    compile "eu.hansolo:regulators:+"
-    compile "org.kordamp.ikonli:ikonli-javafx:2.4.0"
-    compile "org.kordamp.ikonli:ikonli-material-pack:2.4.0"
-    compile "org.kordamp.ikonli:ikonli-materialdesign-pack:2.4.0"
-    compile "org.kordamp.ikonli:ikonli-weathericons-pack:2.4.0"
-    compile 'com.googlecode.json-simple:json-simple:1.1'
+    jcenter()
 }

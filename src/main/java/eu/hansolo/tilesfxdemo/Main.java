@@ -1,11 +1,11 @@
 package eu.hansolo.tilesfxdemo;
 
-import eu.hansolo.fx.regulators.ColorRegulator;
-import eu.hansolo.fx.regulators.ColorRegulatorBuilder;
-import eu.hansolo.fx.regulators.FeedbackRegulator;
-import eu.hansolo.fx.regulators.FeedbackRegulatorBuilder;
-import eu.hansolo.fx.regulators.Regulator;
-import eu.hansolo.fx.regulators.RegulatorBuilder;
+import eu.hansolo.regulators.ColorRegulator;
+import eu.hansolo.regulators.ColorRegulatorBuilder;
+import eu.hansolo.regulators.FeedbackRegulator;
+import eu.hansolo.regulators.FeedbackRegulatorBuilder;
+import eu.hansolo.regulators.Regulator;
+import eu.hansolo.regulators.RegulatorBuilder;
 import eu.hansolo.medusa.Clock;
 import eu.hansolo.medusa.Clock.ClockSkinType;
 import eu.hansolo.medusa.ClockBuilder;
@@ -21,7 +21,7 @@ import eu.hansolo.tilesfx.TileBuilder;
 import eu.hansolo.tilesfx.TimeSection;
 import eu.hansolo.tilesfx.TimeSectionBuilder;
 import eu.hansolo.tilesfx.chart.ChartData;
-import eu.hansolo.tilesfx.chart.RadarChart.Mode;
+import eu.hansolo.tilesfx.chart.RadarChartMode;
 import eu.hansolo.tilesfx.skins.BarChartItem;
 import eu.hansolo.tilesfx.skins.LeaderBoardItem;
 import eu.hansolo.tilesfx.tools.Country;
@@ -130,15 +130,11 @@ public class Main extends Application {
     private Tile              feedbackRegulatorTile;
     private ColorRegulator    colorRegulator;
     private Tile              colorRegulatorTile;
-    //private RestClient        aaplRestClient;
-    //private long              lastStockCall;
     private long              lastTimerCall;
     private AnimationTimer    timer;
 
 
     @Override public void init() {
-        //aaplRestClient = new RestClient("AAPL");
-
         // LineChart Data
         XYChart.Series<String, Number> series1 = new XYChart.Series();
         series1.setName("Whatever");
@@ -489,7 +485,7 @@ public class Main extends Application {
                                      .maxValue(50)
                                      .title("RadarChart Tile")
                                      .unit("Sector")
-                                     .radarChartMode(Mode.SECTOR)
+                                     .radarChartMode(RadarChartMode.SECTOR)
                                      .gradientStops(new Stop(0.00000, Color.TRANSPARENT),
                                                     new Stop(0.00001, Color.web("#3552a0")),
                                                     new Stop(0.09090, Color.web("#456acf")),
@@ -514,7 +510,7 @@ public class Main extends Application {
                                      .maxValue(50)
                                      .title("RadarChart Tile")
                                      .unit("Polygon")
-                                     .radarChartMode(Mode.POLYGON)
+                                     .radarChartMode(RadarChartMode.POLYGON)
                                      .gradientStops(new Stop(0.00000, Color.TRANSPARENT),
                                                     new Stop(0.00001, Color.web("#3552a0")),
                                                     new Stop(0.09090, Color.web("#456acf")),
@@ -766,15 +762,8 @@ public class Main extends Application {
 
                     lastTimerCall = now;
                 }
-                //if (now > lastStockCall + 300_000_000_000l) {
-                //    aaplRestClient.updateQuote();
-                //    lastStockCall = now;
-                //}
             }
         };
-
-        //aaplRestClient.quoteProperty().addListener(o -> stockTile.setValue(Double.parseDouble(aaplRestClient.getQuote().get("LastPrice").toString())));
-        //aaplRestClient.updateQuote();
     }
 
     @Override public void start(Stage stage) {
@@ -796,7 +785,7 @@ public class Main extends Application {
 
         Scene scene = new Scene(pane);
 
-        stage.setTitle("TilesFX Dashboard using Medusa");
+        stage.setTitle("TilesFX Dashboard using Medusa and Regulators");
         stage.setScene(scene);
         stage.show();
 

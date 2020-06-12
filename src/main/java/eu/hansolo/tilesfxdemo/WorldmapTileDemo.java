@@ -6,6 +6,7 @@ import eu.hansolo.tilesfx.TileBuilder;
 import eu.hansolo.tilesfx.chart.ChartDataBuilder;
 import eu.hansolo.tilesfx.tools.Location;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.layout.StackPane;
@@ -51,7 +52,10 @@ public class WorldmapTileDemo extends Application {
 
 
         // Register listeners
-        worldTile.setOnTileEvent(e -> System.out.println(e.getData().getName() + " : " + e.getData().getValue()));
+        worldTile.setOnTileEvent(e -> {
+            if (null == e.getData()) { return; }
+            System.out.println(e.getData().getName() + " : " + e.getData().getValue());
+        });
 
         Chicago.setOnLocationEvent(e -> System.out.println(e.getLocation().getName()));
     }
