@@ -1,27 +1,50 @@
-# This workflow will build a Java project with Gradle
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
+name: ci
 
-name: Java CI with Gradle
-
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: [push, pull_request]
 
 jobs:
-  build:
+  build-windows:
 
-    runs-on: ubuntu-latest
+    runs-on: [ windows-latest ]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK 16
-      uses: actions/setup-java@v2
-      with:
-        java-version: '16'
-        distribution: 'zulu'
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: Build with Gradle
-      run: ./gradlew build
+      - uses: actions/checkout@v2
+      - name: Set up JDK 16
+        uses: actions/setup-java@v1
+        with:
+          java-version: 16
+          architecture: x64
+      - name: Build with Gradle
+        run: .\gradlew.bat assemble
+      - name: Create Distribution
+        run: .\build_app.bat
+      - uses: actions/upload-artifact@v2
+        with:
+          name: TilesFX Demo Windows
+          path: '.\build\installer\TilesFXDemo-16.0.0.msi'
+
+
+
+  build-mac:
+
+    runs-on: [ macos-latest ]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 16
+        uses: actions/setup-java@v1
+        with:
+          java-version: 16
+          architecture: x64
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build with Gradle
+        run: ./gradlew build
+      - name: Grant execute permission for build.sh
+        run: chmod +x ./build_app.sh
+      - name: Create Distribution
+        run: ./build_app.sh
+      - uses: actions/upload-artifact@v2
+        with:
+          name: TilesFX Demo Mac
+          path: ./build/installer/TilesFXDemo-16.0.0.pkg
