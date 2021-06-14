@@ -76,7 +76,7 @@ for %%s in ("app-image" "msi" "exe") do call "%JAVA_HOME%\bin\jpackage" ^
   --type %%s ^
   --dest build\installer ^
   --input build\installer\input\libs ^
-  --name JDKMon ^
+  --name TilesFXDemo ^
   --main-class eu.hansolo.tilesfxdemo.DemoLauncher ^
   --main-jar %MAIN_JAR% ^
   --java-options -Xmx2048m ^
