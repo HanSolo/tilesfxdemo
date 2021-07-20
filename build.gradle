@@ -63,6 +63,7 @@ dependencies {
     implementation "org.openjfx:javafx-controls:11:$platform"
     implementation "org.openjfx:javafx-web:11:$platform"
     implementation "org.openjfx:javafx-media:11:$platform"
+    implementation "org.openjfx:javafx-fxml:11:$platform"
     implementation ('eu.hansolo:tilesfx:11.48') {
         exclude group: 'org.openjfx'
     }
@@ -79,6 +80,7 @@ dependencies {
     implementation 'org.kordamp.ikonli:ikonli-fontawesome-pack:11.5.0'
     implementation 'org.kordamp.ikonli:ikonli-weathericons-pack:11.5.0'
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+    implementation 'com.github.almasb:fxgl:11.16'
 }
 
 
