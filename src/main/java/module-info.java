@@ -9,6 +9,8 @@ module eu.hansolo.tilesfxdemo {
     requires javafx.graphics;
     requires javafx.controls;
     requires javafx.web;
+    requires javafx.media;
+    requires javafx.fxml;
 
     // 3rd party
     requires eu.hansolo.medusa;

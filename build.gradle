@@ -1,34 +1,13 @@
 import java.text.SimpleDateFormat
 
-buildscript {
-    repositories {
-        //jcenter()
-        mavenCentral();
-        /*
-        mavenCentral()
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-        */
-    }
-    dependencies {
-        classpath 'biz.aQute.bnd:biz.aQute.bnd.gradle:5.3.0'
-        classpath 'com.google.gradle:osdetector-gradle-plugin:1.7.0'
-        classpath 'org.javamodularity:moduleplugin:1.8.3'
-        classpath 'org.beryx:badass-jlink-plugin:2.23.7'
-    }
-}
-
 plugins {
     id 'idea'
     id 'java-library'
-    id 'application'
-    id 'com.google.osdetector' version '1.7.0'
-    id 'org.javamodularity.moduleplugin' version '1.8.3'
-    id 'org.beryx.jlink' version '2.23.7'
-    id 'maven-publish'
-    id 'net.nemerosa.versioning' version '2.14.0'
-    id 'com.jfrog.bintray' version '1.8.5'
+    id 'com.google.osdetector'           version '1.7.0'
+    id 'org.javamodularity.moduleplugin' version '1.8.7'
+    id 'org.beryx.jlink'                 version '2.23.2'
+    id 'net.nemerosa.versioning'         version '2.14.0'
+    id 'biz.aQute.bnd.builder'           version '5.3.0'
 }
 
 apply plugin: 'biz.aQute.bnd.builder'
@@ -36,35 +15,32 @@ apply plugin: 'biz.aQute.bnd.builder'
 sourceCompatibility = '16'
 
 description = 'A little demo of TilesFx in combination with other libraries'
+mainClassName = '$moduleName/eu.hansolo.tilesfxdemo.DemoLauncher'
 
 Date buildTimeAndDate = new Date()
 ext {
     buildDate = new SimpleDateFormat('yyyy-MM-dd').format(buildTimeAndDate)
     buildTime = new SimpleDateFormat('HH:mm:ss.SSSZ').format(buildTimeAndDate)
+    platform  = osdetector.os == 'osx' ? 'mac' : osdetector.os == 'windows' ? 'win' : osdetector.os
 }
-
-group 'eu.hansolo.tilesfxdemo'
-version '16.0'
-
-ext.platform = osdetector.os == 'osx' ? 'mac' : osdetector.os == 'windows' ? 'win' : osdetector.os
 
 repositories {
     flatDir {
         dir 'libs'
     }
     mavenCentral()
-    //jcenter()
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.openjfx:javafx-base:11:$platform"
-    implementation "org.openjfx:javafx-graphics:11:$platform"
-    implementation "org.openjfx:javafx-controls:11:$platform"
-    implementation "org.openjfx:javafx-web:11:$platform"
-    implementation "org.openjfx:javafx-media:11:$platform"
-    implementation "org.openjfx:javafx-fxml:11:$platform"
-    implementation ('eu.hansolo:tilesfx:11.48') {
+    implementation "org.openjfx:javafx-base:16:$platform"
+    implementation "org.openjfx:javafx-graphics:16:$platform"
+    implementation "org.openjfx:javafx-controls:16:$platform"
+    implementation "org.openjfx:javafx-swing:16:$platform"
+    implementation "org.openjfx:javafx-web:16:$platform"
+    implementation "org.openjfx:javafx-media:16:$platform"
+    implementation "org.openjfx:javafx-fxml:16:$platform"
+    implementation ('eu.hansolo:tilesfx:16.0.3') {
         exclude group: 'org.openjfx'
     }
     implementation ('eu.hansolo:Medusa:11.5') {
@@ -150,22 +126,25 @@ repositories {
     //jcenter()
 }
 
-mainClassName = '$moduleName/eu.hansolo.tilesfxdemo.DemoLauncher'
-
 jar {
-    from {
-        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-        configurations.runtimeClasspath.collect {  it.isDirectory() ? it : zipTree(it)  }
-    } {
-        exclude "META-INF/*.SF"
-        exclude "META-INF/*.DSA"
-        exclude "META-INF/*.RSA"
-    }
     manifest {
         attributes(
-                'Implementation-Title': 'JDKMon',
-                'Class-Path': 'tilesfxdemo-16.0.jar',
-                'Main-Class': 'eu.hansolo.tilesfxdemo.DemoLauncher'
+                'Built-By'              : System.properties['user.name'],
+                'Created-By'            : System.properties['java.version'] + " (" + System.properties['java.vendor'] + " " + System.properties['java.vm.version'] + ")",
+                'Build-Date'            : project.buildDate,
+                'Build-Time'            : project.buildTime,
+                'Build-Revision'        : versioning.info.commit,
+                'Specification-Title'   : project.name,
+                'Specification-Version' : project.version,
+                'Implementation-Title'  : project.name,
+                'Implementation-Version': project.version,
+                'Bundle-Name'           : project.name,
+                'Bundle-License'        : 'https://www.apache.org/licenses/LICENSE-2.0;description=Apache License Version 2.0;link=https://www.eclipse.org/legal/eplfaq.php',
+                'Bundle-Description'    : description,
+                'Bundle-SymbolicName'   : 'eu.hansolo',
+                'Export-Package'        : 'eu.hansolo.tilesfxdemo',
+                'Class-Path'            : 'tilesfxdemo-16.0.jar',
+                'Main-Class'            : 'eu.hansolo.tilesfxdemo.DemoLauncher'
         )
     }
 }

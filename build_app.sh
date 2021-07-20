@@ -26,7 +26,7 @@
 # APP_VERSION: the application version, e.g. 1.0.0, shown in "about" dialog
 
 JAVA_VERSION=16
-MAIN_JAR="tilesfxdemo-16.0.jar"
+MAIN_JAR="tilesfxdemo-16.0.0.jar"
 APP_VERSION=16.0.0
 
 echo "java home: $JAVA_HOME"
