@@ -16,5 +16,7 @@ module eu.hansolo.tilesfxdemo {
     requires eu.hansolo.regulators;
     requires eu.hansolo.fx.touchslider;
 
+    requires com.almasb.fxgl.all;
+
     exports eu.hansolo.tilesfxdemo;
 }

@@ -1,5 +1,13 @@
 package eu.hansolo.tilesfxdemo;
 
+import com.almasb.fxgl.app.ApplicationMode;
+import com.almasb.fxgl.app.GameApplication;
+import com.almasb.fxgl.app.GameSettings;
+import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.dsl.components.ExpireCleanComponent;
+import com.almasb.fxgl.physics.PhysicsComponent;
+import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
+import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import eu.hansolo.tilesfx.Section;
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.Tile.ChartType;
@@ -56,6 +64,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
@@ -159,6 +168,7 @@ public class Demo extends Application {
     private Tile            turnoverTile;
     private Tile            fluidTile;
     private Tile            fireSmokeTile;
+    private Tile            fxglTile;
 
 
     private long            lastTimerCall;
@@ -1118,6 +1128,48 @@ public class Demo extends Application {
                                    .animated(true)
                                    .build();
 
+        var game = new GameApplication() {
+            @Override
+            protected void initSettings(GameSettings settings) {
+                settings.setWidth((int) TILE_WIDTH);
+                settings.setHeight((int) TILE_HEIGHT);
+                settings.setApplicationMode(ApplicationMode.RELEASE);
+            }
+
+            @Override
+            protected void initGame() {
+                FXGL.entityBuilder()
+                        .buildScreenBoundsAndAttach(20);
+
+                FXGL.run(() -> {
+                    var physics = new PhysicsComponent();
+                    physics.setBodyType(BodyType.DYNAMIC);
+                    physics.setFixtureDef(new FixtureDef().density(0.25f).restitution(0.4f));
+
+                    FXGL.entityBuilder()
+                            .at(FXGL.random(0.0, TILE_WIDTH - 10), 0)
+                            .viewWithBBox(new Rectangle(10, 10, Color.YELLOW))
+                            .with(physics)
+                            .with(new ExpireCleanComponent(javafx.util.Duration.seconds(3)))
+                            .buildAndAttach();
+
+                }, javafx.util.Duration.millis(100));
+            }
+        };
+
+        var fxglPane = GameApplication.embeddedLaunch(game);
+
+        fxglTile = TileBuilder.create()
+                .skinType(SkinType.CUSTOM)
+                .prefSize(TILE_WIDTH, TILE_HEIGHT)
+                .title("FXGL Tile")
+                .graphic(fxglPane)
+                .roundedCorners(false)
+                .build();
+
+        fxglPane.renderWidthProperty().bind(fxglTile.widthProperty().subtract(15));
+        fxglPane.renderHeightProperty().bind(fxglTile.heightProperty().subtract(30));
+
         lastTimerCall = System.nanoTime();
         timer = new AnimationTimer() {
             @Override public void handle(long now) {
@@ -1216,7 +1268,7 @@ public class Demo extends Application {
                                              flipTile, switchSliderTile, dateTile, calendarTile, sunburstTile,
                                              matrixTile, radialPercentageTile, statusTile, barGaugeTile, imageTile,
                                              timelineTile, imageCounterTile, ledTile, countdownTile, matrixIconTile,
-                                             cycleStepTile, customFlagChartTile, colorTile, turnoverTile, fluidTile, fireSmokeTile);
+                                             cycleStepTile, customFlagChartTile, colorTile, turnoverTile, fluidTile, fireSmokeTile, fxglTile);
 
         pane.setHgap(5);
         pane.setVgap(5);
