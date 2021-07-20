@@ -67,7 +67,7 @@ public class InteractiveDemo extends Application {
         worldDataOfSelectedYear = new ArrayList<>(Country.values().length);
         for (int i = 0; i < Country.values().length ; i++) {
             CountryData countryData = new CountryData();
-            double                                         value       = 0;
+            double      value       = 0;
             for (int year = 2008 ; year < 2018 ; year++) {
                 value = RND.nextDouble() * MAX_VALUE * 0.8 + RND.nextDouble() * MAX_VALUE * 0.2;
                 countryData.setValueForYear(year, value);
