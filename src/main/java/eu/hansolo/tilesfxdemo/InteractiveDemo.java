@@ -75,7 +75,7 @@ public class InteractiveDemo extends Application {
 
             Color[] colors  = getColorForValue(0, 100, value);
             Country country = Country.values()[i];
-            country.setColor(colors[0]);
+            country.setFill(colors[0]);
             country.setValueObject(countryData);
 
             worldDataOfSelectedYear.add(new BarChartItem(country.getDisplayName(), value, colors[0]));
@@ -150,11 +150,11 @@ public class InteractiveDemo extends Application {
                 ChartData   data         = e.getData();
                 Country     country      = Country.valueOf(data.getName());
                 CountryData countryData  = (CountryData) country.getValueObject();
-                Color       countryColor = country.getColor();
+                Color       countryColor = country.getFill();
                 int         year         = (int) Helper.snapToTicks(sliderTile.getMinValue(), sliderTile.getMaxValue(), sliderTile.getValue(), 0, 1);
 
                 countryTile.setCountry(country);
-                countryTile.setBarColor(country.getColor());
+                countryTile.setBarColor(country.getFill());
                 countryTile.setValue(countryData.getValueFromYear(year));
                 countryTile.setTitle(Integer.toString(year));
 
@@ -200,7 +200,7 @@ public class InteractiveDemo extends Application {
                     String  countryName           = country.getDisplayName();
                     double  valueOfSelectedYear   = countryData.getValueFromYear(year);
                     Color[] colorsForSelectedYear = getColorForValue(MIN_VALUE, MAX_VALUE, valueOfSelectedYear);
-                    country.setColor(colorsForSelectedYear[0]);
+                    country.setFill(colorsForSelectedYear[0]);
                     country.setValueObject(countryData);
                     Optional<BarChartItem> item = worldDataOfSelectedYear.stream().filter(barChartItem -> barChartItem.getName().equals(countryName)).findFirst();
                     if (item.isPresent()) {
