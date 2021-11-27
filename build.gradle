@@ -4,15 +4,14 @@ plugins {
     id 'idea'
     id 'java-library'
     id 'com.google.osdetector'           version '1.7.0'
-    id 'org.javamodularity.moduleplugin' version '1.8.7'
-    id 'org.beryx.jlink'                 version '2.23.2'
+    id 'org.javamodularity.moduleplugin' version '1.8.8'
+    id 'org.beryx.jlink'                 version '2.24.2'
     id 'net.nemerosa.versioning'         version '2.14.0'
     id 'biz.aQute.bnd.builder'           version '5.3.0'
 }
 
 apply plugin: 'biz.aQute.bnd.builder'
 
-sourceCompatibility = '16'
 
 description = 'A little demo of TilesFx in combination with other libraries'
 mainClassName = '$moduleName/eu.hansolo.tilesfxdemo.DemoLauncher'
@@ -21,7 +20,7 @@ Date buildTimeAndDate = new Date()
 ext {
     buildDate = new SimpleDateFormat('yyyy-MM-dd').format(buildTimeAndDate)
     buildTime = new SimpleDateFormat('HH:mm:ss.SSSZ').format(buildTimeAndDate)
-    platform  = osdetector.os == 'osx' ? 'mac' : osdetector.os == 'windows' ? 'win' : osdetector.os
+    platform        = osdetector.os == 'osx' ? osdetector.arch == 'aarch_64' ? 'mac-aarch64' : 'mac' : osdetector.os == 'windows' ? 'win' : osdetector.os == 'linux' ? osdetector.arch == 'aarch_64' ? 'linux-aarch64' : 'linux' : osdetector.os
 }
 
 repositories {
@@ -33,19 +32,15 @@ repositories {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.openjfx:javafx-base:16:$platform"
-    implementation "org.openjfx:javafx-graphics:16:$platform"
-    implementation "org.openjfx:javafx-controls:16:$platform"
-    implementation "org.openjfx:javafx-swing:16:$platform"
-    implementation "org.openjfx:javafx-web:16:$platform"
-    implementation "org.openjfx:javafx-media:16:$platform"
-    implementation "org.openjfx:javafx-fxml:16:$platform"
-    implementation ('eu.hansolo:tilesfx:16.0.3') {
-        exclude group: 'org.openjfx'
-    }
-    implementation ('eu.hansolo:Medusa:11.5') {
-        exclude group: 'org.openjfx'
-    }
+    implementation "org.openjfx:javafx-base:${javafxVersion}:${platform}"
+    implementation "org.openjfx:javafx-graphics:${javafxVersion}:${platform}"
+    implementation "org.openjfx:javafx-controls:${javafxVersion}:${platform}"
+    implementation "org.openjfx:javafx-swing:${javafxVersion}:${platform}"
+    implementation "org.openjfx:javafx-web:${javafxVersion}:${platform}"
+    implementation "org.openjfx:javafx-media:${javafxVersion}:${platform}"
+    implementation "org.openjfx:javafx-fxml:${javafxVersion}:${platform}"
+    implementation ('eu.hansolo:tilesfx:17.0.11') { exclude group: 'org.openjfx' }
+    implementation ('eu.hansolo:medusa:17.0.0') { exclude group: 'org.openjfx' }
     implementation ('eu.hansolo:regulators:11.7') {
         exclude group: 'org.openjfx'
     }
@@ -57,6 +52,33 @@ dependencies {
     implementation 'org.kordamp.ikonli:ikonli-weathericons-pack:11.5.0'
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
     implementation 'com.github.almasb:fxgl:11.16'
+}
+
+repositories {
+    mavenCentral()
+}
+
+jar {
+    manifest {
+        attributes(
+                'Built-By'              : System.properties['user.name'],
+                'Created-By'            : System.properties['java.version'] + " (" + System.properties['java.vendor'] + " " + System.properties['java.vm.version'] + ")",
+                'Build-Date'            : project.buildDate,
+                'Build-Time'            : project.buildTime,
+                'Build-Revision'        : versioning.info.commit,
+                'Specification-Title'   : project.name,
+                'Specification-Version' : project.version,
+                'Implementation-Title'  : project.name,
+                'Implementation-Version': project.version,
+                'Bundle-Name'           : project.name,
+                'Bundle-License'        : 'https://www.apache.org/licenses/LICENSE-2.0;description=Apache License Version 2.0;link=https://www.eclipse.org/legal/eplfaq.php',
+                'Bundle-Description'    : description,
+                'Bundle-SymbolicName'   : 'eu.hansolo',
+                'Export-Package'        : 'eu.hansolo.tilesfxdemo',
+                'Class-Path'            : 'tilesfxdemo-17.0.0.jar',
+                'Main-Class'            : 'eu.hansolo.tilesfxdemo.DemoLauncher'
+        )
+    }
 }
 
 
@@ -121,33 +143,6 @@ task TouchSlider(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
 }
 
-repositories {
-    mavenCentral()
-    //jcenter()
-}
-
-jar {
-    manifest {
-        attributes(
-                'Built-By'              : System.properties['user.name'],
-                'Created-By'            : System.properties['java.version'] + " (" + System.properties['java.vendor'] + " " + System.properties['java.vm.version'] + ")",
-                'Build-Date'            : project.buildDate,
-                'Build-Time'            : project.buildTime,
-                'Build-Revision'        : versioning.info.commit,
-                'Specification-Title'   : project.name,
-                'Specification-Version' : project.version,
-                'Implementation-Title'  : project.name,
-                'Implementation-Version': project.version,
-                'Bundle-Name'           : project.name,
-                'Bundle-License'        : 'https://www.apache.org/licenses/LICENSE-2.0;description=Apache License Version 2.0;link=https://www.eclipse.org/legal/eplfaq.php',
-                'Bundle-Description'    : description,
-                'Bundle-SymbolicName'   : 'eu.hansolo',
-                'Export-Package'        : 'eu.hansolo.tilesfxdemo',
-                'Class-Path'            : 'tilesfxdemo-16.0.jar',
-                'Main-Class'            : 'eu.hansolo.tilesfxdemo.DemoLauncher'
-        )
-    }
-}
 
 jlink {
     options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
