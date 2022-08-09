@@ -4,6 +4,8 @@ import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.Tile.SkinType;
 import eu.hansolo.tilesfx.TileBuilder;
 import eu.hansolo.tilesfx.chart.ChartDataBuilder;
+import eu.hansolo.tilesfx.events.LocationEvt;
+import eu.hansolo.tilesfx.events.TileEvt;
 import eu.hansolo.toolbox.evt.Evt;
 import eu.hansolo.toolboxfx.geom.Location;
 import eu.hansolo.toolboxfx.geom.LocationBuilder;
@@ -54,12 +56,12 @@ public class WorldmapTileDemo extends Application {
 
 
         // Register listeners
-        worldTile.addTileObserver(Evt.ANY, e -> {
+        worldTile.addTileObserver(TileEvt.ANY, e -> {
             if (null == e.getData()) { return; }
             System.out.println(e.getData().getName() + " : " + e.getData().getValue());
         });
 
-        Chicago.addLocationObserver(Evt.ANY, e -> System.out.println(e.getLocation().getName()));
+        Chicago.addLocationObserver(LocationEvt.ANY,e -> System.out.println(e.getLocation().getName()));
     }
 
     @Override public void start(Stage stage) {
