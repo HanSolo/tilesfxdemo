@@ -8,6 +8,8 @@ import com.almasb.fxgl.dsl.components.ExpireCleanComponent;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
+import eu.hansolo.fx.countries.Country;
+import eu.hansolo.fx.countries.flag.Flag;
 import eu.hansolo.tilesfx.Section;
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.Tile.ChartType;
@@ -25,18 +27,17 @@ import eu.hansolo.tilesfx.chart.SunburstChart.TextOrientation;
 import eu.hansolo.tilesfx.chart.TilesFXSeries;
 import eu.hansolo.tilesfx.colors.Bright;
 import eu.hansolo.tilesfx.colors.Dark;
-import eu.hansolo.tilesfx.events.TileEvent.EventType;
-import eu.hansolo.tilesfx.icons.Flag;
+import eu.hansolo.tilesfx.events.TileEvt;
 import eu.hansolo.tilesfx.skins.BarChartItem;
 import eu.hansolo.tilesfx.skins.LeaderBoardItem;
-import eu.hansolo.tilesfx.tools.Country;
 import eu.hansolo.tilesfx.tools.FlowGridPane;
 import eu.hansolo.tilesfx.tools.Helper;
-import eu.hansolo.tilesfx.tools.Location;
 import eu.hansolo.tilesfx.tools.MatrixIcon;
 import eu.hansolo.tilesfx.tools.Rank;
 import eu.hansolo.tilesfx.tools.Ranking;
 import eu.hansolo.tilesfx.tools.TreeNode;
+import eu.hansolo.toolbox.evt.EvtType;
+import eu.hansolo.toolboxfx.geom.LocationBuilder;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.beans.property.DoubleProperty;
@@ -78,7 +79,7 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-import static eu.hansolo.tilesfx.icons.Flag.*;
+import static eu.hansolo.fx.countries.flag.Flag.*;
 
 
 /**
@@ -465,10 +466,10 @@ public class Demo extends Application {
                              .title("Map Tile")
                              .text("Some text")
                              .description("Description")
-                             .currentLocation(new Location(51.91178, 7.63379, "Home", TileColor.MAGENTA.color))
-                             .pointsOfInterest(new Location(51.914405, 7.635732, "POI 1", TileColor.RED.color),
-                                               new Location(51.912529, 7.631752, "POI 2", TileColor.BLUE.color),
-                                               new Location(51.923993, 7.628906, "POI 3", TileColor.YELLOW_ORANGE.color))
+                             .currentLocation(LocationBuilder.create().name("Home").latitude(51.91178).longitude(7.63379).fill(TileColor.MAGENTA.color).build())
+                             .pointsOfInterest(LocationBuilder.create().name("POI 1").latitude(51.914405).longitude(7.635732).fill(TileColor.RED.color).build(),
+                                               LocationBuilder.create().name("POI 2").latitude(51.912529).longitude(7.631752).fill(TileColor.BLUE.color).build(),
+                                               LocationBuilder.create().name("POI 3").latitude(51.923993).longitude(7.628906).fill(TileColor.YELLOW_ORANGE.color).build())
                              .mapProvider(MapProvider.TOPO)
                              .build();
 
@@ -1095,11 +1096,11 @@ public class Demo extends Application {
                                   .animated(true)
                                   .checkThreshold(true)
                                   .onTileEvent(e -> {
-                                      if (EventType.THRESHOLD_EXCEEDED == e.getEventType()) {
+                                      if (e.getEvtType() == TileEvt.THRESHOLD_EXCEEDED) {
                                           turnoverTile.setRank(firstRank);
                                           turnoverTile.setValueColor(firstRank.getColor());
                                           turnoverTile.setUnitColor(firstRank.getColor());
-                                      } else if (EventType.THRESHOLD_UNDERRUN == e.getEventType()) {
+                                      } else if (e.getEvtType() == TileEvt.THRESHOLD_UNDERRUN) {
                                           turnoverTile.setRank(Rank.DEFAULT);
                                           turnoverTile.setValueColor(Tile.FOREGROUND);
                                           turnoverTile.setUnitColor(Tile.FOREGROUND);
@@ -1296,8 +1297,8 @@ public class Demo extends Application {
 
         timer.start();
 
-        mapTile.addPoiLocation(new Location(51.85, 7.75, "Test"));
-        mapTile.removePoiLocation(new Location(51.85, 7.75, "Test"));
+        mapTile.addPoiLocation(LocationBuilder.create().name("Test").latitude(51.85).longitude(7.75).build());
+        mapTile.removePoiLocation(LocationBuilder.create().name("Test").latitude(51.85).longitude(7.75).build());
 
         radialPercentageTile.setNotifyRegionTooltipText("tooltip");
         radialPercentageTile.showNotifyRegion(true);

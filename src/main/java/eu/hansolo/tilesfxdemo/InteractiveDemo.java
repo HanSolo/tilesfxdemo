@@ -1,18 +1,17 @@
 package eu.hansolo.tilesfxdemo;
 
 
+import eu.hansolo.fx.countries.Country;
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.Tile.SkinType;
 import eu.hansolo.tilesfx.TileBuilder;
-import eu.hansolo.tilesfx.ValueObject;
 import eu.hansolo.tilesfx.chart.ChartData;
-import eu.hansolo.tilesfx.events.TileEvent;
-import eu.hansolo.tilesfx.events.TileEvent.EventType;
+import eu.hansolo.tilesfx.events.TileEvt;
 import eu.hansolo.tilesfx.skins.BarChartItem;
-import eu.hansolo.tilesfx.tools.Country;
 import eu.hansolo.tilesfx.tools.FlowGridPane;
 import eu.hansolo.tilesfx.tools.Helper;
-import eu.hansolo.tilesfx.tools.LocationBuilder;
+import eu.hansolo.toolboxfx.ValueObject;
+import eu.hansolo.toolboxfx.geom.LocationBuilder;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -145,24 +144,22 @@ public class InteractiveDemo extends Application {
 
 
         // Event handling
-        worldTile.setOnTileEvent(e -> {
-            if (e.getEventType() == EventType.SELECTED_CHART_DATA) {
-                ChartData   data         = e.getData();
-                Country     country      = Country.valueOf(data.getName());
-                CountryData countryData  = (CountryData) country.getValueObject();
-                Color       countryColor = country.getFill();
-                int         year         = (int) Helper.snapToTicks(sliderTile.getMinValue(), sliderTile.getMaxValue(), sliderTile.getValue(), 0, 1);
+        worldTile.addTileObserver(TileEvt.SELECTED_CHART_DATA, e -> {
+            ChartData   data         = e.getData();
+            Country     country      = Country.valueOf(data.getName());
+            CountryData countryData  = (CountryData) country.getValueObject();
+            Color       countryColor = country.getFill();
+            int         year         = (int) Helper.snapToTicks(sliderTile.getMinValue(), sliderTile.getMaxValue(), sliderTile.getValue(), 0, 1);
 
-                countryTile.setCountry(country);
-                countryTile.setBarColor(country.getFill());
-                countryTile.setValue(countryData.getValueFromYear(year));
-                countryTile.setTitle(Integer.toString(year));
+            countryTile.setCountry(country);
+            countryTile.setBarColor(country.getFill());
+            countryTile.setValue(countryData.getValueFromYear(year));
+            countryTile.setTitle(Integer.toString(year));
 
-                smoothAreaTile.setTitle("History " + country.getDisplayName() + " 2008 - 2017");
-                smoothAreaTile.setBarColor(countryColor);
+            smoothAreaTile.setTitle("History " + country.getDisplayName() + " 2008 - 2017");
+            smoothAreaTile.setBarColor(countryColor);
 
-                donutTile.setTitle("Distribution " + country.getDisplayName() + " 2008 - 2017");
-            }
+            donutTile.setTitle("Distribution " + country.getDisplayName() + " 2008 - 2017");
         });
 
         countryTile.valueProperty().addListener(o -> {
@@ -180,39 +177,36 @@ public class InteractiveDemo extends Application {
             }
         });
 
-        sliderTile.setOnTileEvent(e -> {
-            EventType type = e.getEventType();
-            if (EventType.VALUE_CHANGED == type) {
-                Country     country     = countryTile.getCountry();
-                CountryData countryData = (CountryData) country.getValueObject();
+        sliderTile.addTileObserver(TileEvt.VALUE_CHANGED, e -> {
+            Country     country     = countryTile.getCountry();
+            CountryData countryData = (CountryData) country.getValueObject();
 
-                int year = (int) Helper.snapToTicks(sliderTile.getMinValue(), sliderTile.getMaxValue(), sliderTile.getValue(), 0, 1);
-                Color[] colors = getColorForValue(MIN_VALUE, MAX_VALUE, countryData.getValueFromYear(year));
-                countryTile.setBarColor(colors[0]);
-                countryTile.setValue(countryData.getValueFromYear(year));
-                countryTile.setTitle(Integer.toString(year));
+            int year = (int) Helper.snapToTicks(sliderTile.getMinValue(), sliderTile.getMaxValue(), sliderTile.getValue(), 0, 1);
+            Color[] colors = getColorForValue(MIN_VALUE, MAX_VALUE, countryData.getValueFromYear(year));
+            countryTile.setBarColor(colors[0]);
+            countryTile.setValue(countryData.getValueFromYear(year));
+            countryTile.setTitle(Integer.toString(year));
 
-                smoothAreaTile.setBarColor(colors[0]);
+            smoothAreaTile.setBarColor(colors[0]);
 
-                for (int i = 0; i < Country.values().length ; i++) {
-                    country     = Country.values()[i];
-                    countryData = (CountryData) country.getValueObject();
-                    String  countryName           = country.getDisplayName();
-                    double  valueOfSelectedYear   = countryData.getValueFromYear(year);
-                    Color[] colorsForSelectedYear = getColorForValue(MIN_VALUE, MAX_VALUE, valueOfSelectedYear);
-                    country.setFill(colorsForSelectedYear[0]);
-                    country.setValueObject(countryData);
-                    Optional<BarChartItem> item = worldDataOfSelectedYear.stream().filter(barChartItem -> barChartItem.getName().equals(countryName)).findFirst();
-                    if (item.isPresent()) {
-                        item.get().setValue(valueOfSelectedYear);
-                        item.get().setBarColor(colorsForSelectedYear[0]);
-                    }
+            for (int i = 0; i < Country.values().length ; i++) {
+                country     = Country.values()[i];
+                countryData = (CountryData) country.getValueObject();
+                String  countryName           = country.getDisplayName();
+                double  valueOfSelectedYear   = countryData.getValueFromYear(year);
+                Color[] colorsForSelectedYear = getColorForValue(MIN_VALUE, MAX_VALUE, valueOfSelectedYear);
+                country.setFill(colorsForSelectedYear[0]);
+                country.setValueObject(countryData);
+                Optional<BarChartItem> item = worldDataOfSelectedYear.stream().filter(barChartItem -> barChartItem.getName().equals(countryName)).findFirst();
+                if (item.isPresent()) {
+                    item.get().setValue(valueOfSelectedYear);
+                    item.get().setBarColor(colorsForSelectedYear[0]);
                 }
-                worldTile.setTitle("World Data " + year);
-                worldTile.fireTileEvent(new TileEvent(EventType.REFRESH));
-
-                bargraphTile.setTitle("Highest in " + year);
             }
+            worldTile.setTitle("World Data " + year);
+            worldTile.fireTileEvt(new TileEvt(worldTile, TileEvt.REFRESH));
+
+            bargraphTile.setTitle("Highest in " + year);
         });
     }
 

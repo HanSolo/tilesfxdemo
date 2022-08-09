@@ -4,13 +4,10 @@ plugins {
     id 'idea'
     id 'java-library'
     id 'com.google.osdetector'           version '1.7.0'
-    id 'org.javamodularity.moduleplugin' version '1.8.8'
-    id 'org.beryx.jlink'                 version '2.24.2'
-    id 'net.nemerosa.versioning'         version '2.14.0'
-    id 'biz.aQute.bnd.builder'           version '5.3.0'
+    id 'org.javamodularity.moduleplugin' version '1.8.12'
+    id 'org.beryx.jlink'                 version '2.25.0'
+    id 'net.nemerosa.versioning'         version '3.0.0'
 }
-
-apply plugin: 'biz.aQute.bnd.builder'
 
 
 description = 'A little demo of TilesFx in combination with other libraries'
@@ -39,11 +36,15 @@ dependencies {
     implementation "org.openjfx:javafx-web:${javafxVersion}:${platform}"
     implementation "org.openjfx:javafx-media:${javafxVersion}:${platform}"
     implementation "org.openjfx:javafx-fxml:${javafxVersion}:${platform}"
-    implementation ('eu.hansolo:tilesfx:17.0.11') { exclude group: 'org.openjfx' }
-    implementation ('eu.hansolo:medusa:17.0.0') { exclude group: 'org.openjfx' }
-    implementation ('eu.hansolo:regulators:11.7') {
-        exclude group: 'org.openjfx'
-    }
+    implementation 'eu.hansolo:toolbox:17.0.26'
+    implementation 'eu.hansolo:toolboxfx:17.0.29'
+    implementation 'eu.hansolo:tilesfx:17.1.15'
+    implementation 'eu.hansolo:medusa:17.1.5'
+    implementation 'eu.hansolo.fx:charts:17.1.13'
+    implementation 'eu.hansolo.fx:countries:17.0.23'
+    implementation 'eu.hansolo.fx:heatmap:17.0.12'
+    implementation 'eu.hansolo:regulators:17.0.0'
+    implementation 'eu.hansolo.fx:TouchSlider:17.0.0'
     implementation 'org.kordamp.ikonli:ikonli-core:11.5.0'
     implementation 'org.kordamp.ikonli:ikonli-javafx:11.5.0'
     implementation 'org.kordamp.ikonli:ikonli-material-pack:11.5.0'
@@ -51,7 +52,7 @@ dependencies {
     implementation 'org.kordamp.ikonli:ikonli-fontawesome-pack:11.5.0'
     implementation 'org.kordamp.ikonli:ikonli-weathericons-pack:11.5.0'
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
-    implementation 'com.github.almasb:fxgl:11.16'
+    implementation 'com.github.almasb:fxgl:17.1'
 }
 
 repositories {

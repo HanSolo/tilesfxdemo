@@ -4,7 +4,9 @@ import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.Tile.SkinType;
 import eu.hansolo.tilesfx.TileBuilder;
 import eu.hansolo.tilesfx.chart.ChartDataBuilder;
-import eu.hansolo.tilesfx.tools.Location;
+import eu.hansolo.toolbox.evt.Evt;
+import eu.hansolo.toolboxfx.geom.Location;
+import eu.hansolo.toolboxfx.geom.LocationBuilder;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.paint.Color;
@@ -29,12 +31,12 @@ public class WorldmapTileDemo extends Application {
 
 
     @Override public void init() {
-        SanFranciso = new Location(37.7576171, -122.5776844, "San Francisco", Color.MAGENTA);
-        NewYork     = new Location(40.7157216,-74.3036411, "New York", Color.MAGENTA);
-        Chicago     = new Location(41.8333908,-88.0128341, "Chicago", Color.MAGENTA);
-        Home        = new Location(51.9065938,7.6352688, "Hause", Color.CRIMSON);
-        Moscow      = new Location(55.751042, 37.619060, "Moscow", Color.MAGENTA);
-        Singapore   = new Location(1.3346428,103.8415972, "Singapore", Color.MAGENTA);
+        SanFranciso = LocationBuilder.create().name("San Francisco").latitude(37.7576171).longitude(-122.5776844).fill(Color.MAGENTA).build();
+        NewYork     = LocationBuilder.create().name("New York").latitude(40.7157216).longitude(-74.3036411).fill(Color.MAGENTA).build();
+        Chicago     = LocationBuilder.create().name("Chicago").latitude(41.8333908).longitude(-88.0128341).fill(Color.MAGENTA).build();
+        Home        = LocationBuilder.create().name("Home").latitude(51.9065938).longitude(7.6352688).fill(Color.CRIMSON).build();
+        Moscow      = LocationBuilder.create().name("Moscow").latitude(55.751042).longitude(37.619060).fill(Color.MAGENTA).build();
+        Singapore   = LocationBuilder.create().name("Singapore").latitude(1.3346428).longitude(103.8415972).fill(Color.MAGENTA).build();
 
         worldTile = TileBuilder.create()
                                .skinType(SkinType.WORLDMAP)
@@ -52,12 +54,12 @@ public class WorldmapTileDemo extends Application {
 
 
         // Register listeners
-        worldTile.setOnTileEvent(e -> {
+        worldTile.addTileObserver(Evt.ANY, e -> {
             if (null == e.getData()) { return; }
             System.out.println(e.getData().getName() + " : " + e.getData().getValue());
         });
 
-        Chicago.setOnLocationEvent(e -> System.out.println(e.getLocation().getName()));
+        Chicago.addLocationObserver(Evt.ANY, e -> System.out.println(e.getLocation().getName()));
     }
 
     @Override public void start(Stage stage) {

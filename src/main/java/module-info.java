@@ -17,6 +17,10 @@ module eu.hansolo.tilesfxdemo {
     requires eu.hansolo.tilesfx;
     requires eu.hansolo.regulators;
     requires eu.hansolo.fx.touchslider;
+    requires transitive eu.hansolo.toolbox;
+    requires transitive eu.hansolo.toolboxfx;
+    requires transitive eu.hansolo.fx.heatmap;
+    requires transitive eu.hansolo.fx.countries;
 
     requires com.almasb.fxgl.all;
 
