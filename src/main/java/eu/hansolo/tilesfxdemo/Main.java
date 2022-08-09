@@ -1,5 +1,6 @@
 package eu.hansolo.tilesfxdemo;
 
+import eu.hansolo.fx.countries.Country;
 import eu.hansolo.regulators.ColorRegulator;
 import eu.hansolo.regulators.ColorRegulatorBuilder;
 import eu.hansolo.regulators.FeedbackRegulator;
@@ -24,9 +25,8 @@ import eu.hansolo.tilesfx.chart.ChartData;
 import eu.hansolo.tilesfx.chart.RadarChartMode;
 import eu.hansolo.tilesfx.skins.BarChartItem;
 import eu.hansolo.tilesfx.skins.LeaderBoardItem;
-import eu.hansolo.tilesfx.tools.Country;
 import eu.hansolo.tilesfx.tools.FlowGridPane;
-import eu.hansolo.tilesfx.tools.Location;
+import eu.hansolo.toolboxfx.geom.LocationBuilder;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -399,10 +399,10 @@ public class Main extends Application {
                              .title("Map Tile")
                              .text("Whatever text")
                              .description("Description")
-                             .currentLocation(new Location(51.91178, 7.63379, "Home", TileColor.MAGENTA.color))
-                             .pointsOfInterest(new Location(51.914405, 7.635732, "POI 1", TileColor.RED.color),
-                                               new Location(51.912529, 7.631752, "POI 2", TileColor.BLUE.color),
-                                               new Location(51.923993, 7.628906, "POI 3", TileColor.YELLOW_ORANGE.color))
+                             .currentLocation(LocationBuilder.create().name("Home").latitude(51.91178).longitude(7.63379).fill(TileColor.MAGENTA.color).build())
+                             .pointsOfInterest(LocationBuilder.create().name("POI 1").latitude(51.914405).longitude(7.635732).fill(TileColor.RED.color).build(),
+                                               LocationBuilder.create().name("POI 2").latitude(51.912529).longitude(7.631752).fill(TileColor.BLUE.color).build(),
+                                               LocationBuilder.create().name("POI 3").latitude(51.923993).longitude(7.628906).fill(TileColor.YELLOW_ORANGE.color).build())
                              .mapProvider(MapProvider.STREET)
                              .build();
 

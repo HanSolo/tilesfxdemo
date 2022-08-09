@@ -4,7 +4,7 @@ import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.Tile.SkinType;
 import eu.hansolo.tilesfx.TileBuilder;
 import eu.hansolo.tilesfx.chart.ChartData;
-import eu.hansolo.tilesfx.events.TileEvent.EventType;
+import eu.hansolo.tilesfx.events.TileEvt;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
@@ -60,10 +60,8 @@ public class CalendarTileDemo extends Application {
                                    .chartData(chartData)
                                    .build();
 
-        calendarTile.setOnTileEvent(e -> {
-            if (EventType.SELECTED_CHART_DATA == e.getEventType()) {
-                System.out.println(e.getData().getName() + " : " + e.getData().getValue());
-            }
+        calendarTile.addTileObserver(TileEvt.SELECTED_CHART_DATA, e -> {
+            System.out.println(e.getData().getName() + " : " + e.getData().getValue());
         });
 
         lastTimerCall = System.nanoTime();
