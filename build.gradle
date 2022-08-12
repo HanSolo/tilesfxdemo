@@ -10,15 +10,17 @@ plugins {
 }
 
 
+Date buildTimeAndDate = new Date()
+ext {
+    moduleName      = 'eu.hansolo.tilesfxdemo'
+    buildDate       = new SimpleDateFormat('yyyy-MM-dd').format(buildTimeAndDate)
+    buildTime       = new SimpleDateFormat('HH:mm:ss.SSSZ').format(buildTimeAndDate)
+    platform        = osdetector.os == 'osx' ? osdetector.arch == 'aarch_64' ? 'mac-aarch64' : 'mac' : osdetector.os == 'windows' ? 'win' : osdetector.os == 'linux' ? osdetector.arch == 'aarch_64' ? 'linux-aarch64' : 'linux' : osdetector.os
+}
+
 description = 'A little demo of TilesFx in combination with other libraries'
 mainClassName = '$moduleName/eu.hansolo.tilesfxdemo.DemoLauncher'
 
-Date buildTimeAndDate = new Date()
-ext {
-    buildDate = new SimpleDateFormat('yyyy-MM-dd').format(buildTimeAndDate)
-    buildTime = new SimpleDateFormat('HH:mm:ss.SSSZ').format(buildTimeAndDate)
-    platform        = osdetector.os == 'osx' ? osdetector.arch == 'aarch_64' ? 'mac-aarch64' : 'mac' : osdetector.os == 'windows' ? 'win' : osdetector.os == 'linux' ? osdetector.arch == 'aarch_64' ? 'linux-aarch64' : 'linux' : osdetector.os
-}
 
 repositories {
     flatDir {
@@ -40,11 +42,11 @@ dependencies {
     implementation 'eu.hansolo:toolboxfx:17.0.29'
     implementation 'eu.hansolo:tilesfx:17.1.15'
     implementation 'eu.hansolo:medusa:17.1.5'
-    implementation 'eu.hansolo.fx:charts:17.1.13'
+    implementation 'eu.hansolo.fx:charts:17.1.15'
     implementation 'eu.hansolo.fx:countries:17.0.23'
     implementation 'eu.hansolo.fx:heatmap:17.0.12'
     implementation 'eu.hansolo:regulators:17.0.0'
-    implementation 'eu.hansolo.fx:TouchSlider:17.0.0'
+    implementation 'eu.hansolo:touchslider:17.0.0'
     implementation 'org.kordamp.ikonli:ikonli-core:11.5.0'
     implementation 'org.kordamp.ikonli:ikonli-javafx:11.5.0'
     implementation 'org.kordamp.ikonli:ikonli-material-pack:11.5.0'
@@ -60,6 +62,14 @@ repositories {
 }
 
 jar {
+    from {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        configurations.runtimeClasspath.collect {  it.isDirectory() ? it : zipTree(it)  }
+    } {
+        exclude "META-INF/*.SF"
+        exclude "META-INF/*.DSA"
+        exclude "META-INF/*.RSA"
+    }
     manifest {
         attributes(
                 'Built-By'              : System.properties['user.name'],
@@ -74,9 +84,9 @@ jar {
                 'Bundle-Name'           : project.name,
                 'Bundle-License'        : 'https://www.apache.org/licenses/LICENSE-2.0;description=Apache License Version 2.0;link=https://www.eclipse.org/legal/eplfaq.php',
                 'Bundle-Description'    : description,
-                'Bundle-SymbolicName'   : 'eu.hansolo',
+                'Bundle-SymbolicName'   : 'eu.hansolo.tilesfxdemo',
                 'Export-Package'        : 'eu.hansolo.tilesfxdemo',
-                'Class-Path'            : 'tilesfxdemo-17.0.0.jar',
+                'Class-Path'            : '${project.name}-${project.version}.jar',
                 'Main-Class'            : 'eu.hansolo.tilesfxdemo.DemoLauncher'
         )
     }
