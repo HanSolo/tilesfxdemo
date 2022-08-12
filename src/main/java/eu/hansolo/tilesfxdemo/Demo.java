@@ -69,6 +69,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalTime;
@@ -88,10 +90,12 @@ import static eu.hansolo.fx.countries.flag.Flag.*;
  * Time: 12:54
  */
 public class Demo extends Application {
-    private static final    Random RND = new Random();
-    private static final    double TILE_WIDTH  = 150;
-    private static final    double TILE_HEIGHT = 150;
-    private                 int    noOfNodes = 0;
+    private static final    RuntimeMXBean RUNTIME_MX_BEAN = ManagementFactory.getRuntimeMXBean();
+    private static final    long          NOW             = System.currentTimeMillis();
+    private static final    Random        RND             = new Random();
+    private static final    double        TILE_WIDTH      = 150;
+    private static final    double        TILE_HEIGHT     = 150;
+    private                 int           noOfNodes       = 0;
 
     private BarChartItem    barChartItem1;
     private BarChartItem    barChartItem2;
@@ -1252,12 +1256,11 @@ public class Demo extends Application {
             }
         };
 
+        System.out.println("----------------------------------");
         System.out.println("Initialization: " + (System.currentTimeMillis() - start) + "ms");
     }
 
     @Override public void start(Stage stage) {
-        long start = System.currentTimeMillis();
-
         FlowGridPane pane = new FlowGridPane(8, 6,
                                              percentageTile, clockTile, gaugeTile, sparkLineTile, areaChartTile,
                                              lineChartTile, timerControlTile, numberTile, textTile,
@@ -1285,14 +1288,16 @@ public class Demo extends Application {
         Scene scene = new Scene(pane);
         scene.setCamera(camera);
 
-        stage.setTitle("TilesFX");
+        stage.setTitle("TilesFX Demo");
         stage.setScene(scene);
-        stage.show();
 
-        System.out.println("Rendering     : " + (System.currentTimeMillis() - start) + "ms");
+        long start = System.currentTimeMillis();
+        stage.show();
+        System.out.println("1st Rendering : " + (System.currentTimeMillis() - start) + "ms");
 
         // Calculate number of nodes
         calcNoOfNodes(pane);
+        System.out.println("----------------------------------");
         System.out.println("Nodes in Scene: " + noOfNodes);
 
         timer.start();
@@ -1353,6 +1358,12 @@ public class Demo extends Application {
 
 
     public static void main(String[] args) {
+        System.out.println("---------- Demo ------------------");
+        System.out.println("JVM Vendor               : " + RUNTIME_MX_BEAN.getVmVendor());
+        System.out.println("JVM Name                 : " + RUNTIME_MX_BEAN.getVmName());
+        System.out.println("JVM Version              : " + RUNTIME_MX_BEAN.getVmVersion());
+        System.out.println("Start time         (Demo): " + (NOW - RUNTIME_MX_BEAN.getStartTime()) + "ms");
+        System.out.println("Uptime             (Demo): " + RUNTIME_MX_BEAN.getUptime()+ "ms");
         launch(args);
     }
 }

@@ -3,6 +3,7 @@ module eu.hansolo.tilesfxdemo {
     // Java
     requires java.base;
     requires java.logging;
+    requires java.management;
 
     // Java-FX
     requires javafx.base;
