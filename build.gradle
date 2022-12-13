@@ -1,11 +1,10 @@
 import java.text.SimpleDateFormat
 
 plugins {
-    id 'idea'
     id 'java-library'
+    id 'application'
     id 'com.google.osdetector'           version '1.7.0'
     id 'org.javamodularity.moduleplugin' version '1.8.12'
-    id 'org.beryx.jlink'                 version '2.25.0'
     id 'net.nemerosa.versioning'         version '3.0.0'
 }
 
@@ -19,7 +18,7 @@ ext {
 }
 
 description = 'A little demo of TilesFx in combination with other libraries'
-mainClassName = '$moduleName/eu.hansolo.tilesfxdemo.DemoLauncher'
+mainClassName = 'eu.hansolo.tilesfxdemo.DemoLauncher'
 
 
 repositories {
@@ -38,8 +37,8 @@ dependencies {
     implementation "org.openjfx:javafx-web:${javafxVersion}:${platform}"
     implementation "org.openjfx:javafx-media:${javafxVersion}:${platform}"
     implementation "org.openjfx:javafx-fxml:${javafxVersion}:${platform}"
-    implementation 'eu.hansolo:toolbox:17.0.26'
-    implementation 'eu.hansolo:toolboxfx:17.0.29'
+    implementation 'eu.hansolo:toolbox:17.0.33'
+    implementation 'eu.hansolo:toolboxfx:17.0.33'
     implementation 'eu.hansolo:tilesfx:17.1.15'
     implementation 'eu.hansolo:medusa:17.1.5'
     implementation 'eu.hansolo.fx:charts:17.1.15'
@@ -95,73 +94,65 @@ jar {
 
 // start the demo from gradle
 task Main(type: JavaExec) {
-    main = "eu.hansolo.tilesfxdemo.MainLauncher"
+    mainClass = "eu.hansolo.tilesfxdemo.MainLauncher"
     classpath = sourceSets.main.runtimeClasspath
 }
 
 task Demo(type: JavaExec) {
-    main = "eu.hansolo.tilesfxdemo.DemoLauncher"
+    mainClass = "eu.hansolo.tilesfxdemo.DemoLauncher"
     classpath = sourceSets.main.runtimeClasspath
 }
 
 task Overview(type: JavaExec) {
-    main = "eu.hansolo.tilesfxdemo.OverviewLauncher"
+    mainClass = "eu.hansolo.tilesfxdemo.OverviewLauncher"
     classpath = sourceSets.main.runtimeClasspath
 }
 
 task Countdown(type: JavaExec) {
-    main = "eu.hansolo.tilesfxdemo.CountdownLauncher"
+    mainClass = "eu.hansolo.tilesfxdemo.CountdownLauncher"
     classpath = sourceSets.main.runtimeClasspath
 }
 
 task Interactive(type: JavaExec) {
-    main = "eu.hansolo.tilesfxdemo.InteractiveDemoLauncher"
+    mainClass = "eu.hansolo.tilesfxdemo.InteractiveDemoLauncher"
     classpath = sourceSets.main.runtimeClasspath
 }
 
 task Calendar(type: JavaExec) {
-    main = "eu.hansolo.tilesfxdemo.CalendarTileDemoLauncher"
+    mainClass = "eu.hansolo.tilesfxdemo.CalendarTileDemoLauncher"
     classpath = sourceSets.main.runtimeClasspath
 }
 
 task Matrix(type: JavaExec) {
-    main = "eu.hansolo.tilesfxdemo.MatrixTileDemoLauncher"
+    mainClass = "eu.hansolo.tilesfxdemo.MatrixTileDemoLauncher"
     classpath = sourceSets.main.runtimeClasspath
 }
 
 task Control(type: JavaExec) {
-    main = "eu.hansolo.tilesfxdemo.ControlDemoLauncher"
+    mainClass = "eu.hansolo.tilesfxdemo.ControlDemoLauncher"
     classpath = sourceSets.main.runtimeClasspath
 }
 
 task Misc(type: JavaExec) {
-    main = "eu.hansolo.tilesfxdemo.MiscDemoLauncher"
+    mainClass = "eu.hansolo.tilesfxdemo.MiscDemoLauncher"
     classpath = sourceSets.main.runtimeClasspath
 }
 
 task Layout(type: JavaExec) {
-    main = "eu.hansolo.tilesfxdemo.LayoutDemoLauncher"
+    mainClass = "eu.hansolo.tilesfxdemo.LayoutDemoLauncher"
     classpath = sourceSets.main.runtimeClasspath
 }
 
 task WorldmapTile(type: JavaExec) {
-    main = "eu.hansolo.tilesfxdemo.WorldmapTileDemoLauncher"
+    mainClass = "eu.hansolo.tilesfxdemo.WorldmapTileDemoLauncher"
     classpath = sourceSets.main.runtimeClasspath
 }
 
 task TouchSlider(type: JavaExec) {
-    main = "eu.hansolo.tilesfxdemo.TouchSliderDemoLauncher"
+    mainClass = "eu.hansolo.tilesfxdemo.TouchSliderDemoLauncher"
     classpath = sourceSets.main.runtimeClasspath
 }
 
-
-
-jlink {
-    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
-    launcher {
-        name = 'eu.hansolo.tilesfxdemo'
-    }
-}
 
 // Fix problems with loading resources
 sourceSets {
