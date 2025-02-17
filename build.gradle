@@ -3,9 +3,9 @@ import java.text.SimpleDateFormat
 plugins {
     id 'java-library'
     id 'application'
-    id 'com.google.osdetector'           version '1.7.0'
-    id 'org.javamodularity.moduleplugin' version '1.8.12'
-    id 'net.nemerosa.versioning'         version '3.0.0'
+    id 'com.google.osdetector'           version '1.7.3'
+    id 'org.javamodularity.moduleplugin' version '1.8.15'
+    id 'net.nemerosa.versioning'         version '3.1.0'
 }
 
 
@@ -157,6 +157,6 @@ task TouchSlider(type: JavaExec) {
 // Fix problems with loading resources
 sourceSets {
     main {
-        output.setResourcesDir(java.outputDir)
+        output.setResourcesDir(java.classesDirectory)
     }
 }
