@@ -11,7 +11,7 @@ import eu.hansolo.tilesfx.TileBuilder;
 import eu.hansolo.tilesfx.TimeSection;
 import eu.hansolo.tilesfx.TimeSectionBuilder;
 import eu.hansolo.tilesfx.addons.Indicator;
-import eu.hansolo.tilesfx.chart.ChartData;;
+import eu.hansolo.tilesfx.chart.ChartData;
 import eu.hansolo.tilesfx.chart.RadarChartMode;
 import eu.hansolo.tilesfx.skins.BarChartItem;
 import eu.hansolo.tilesfx.skins.LeaderBoardItem;
